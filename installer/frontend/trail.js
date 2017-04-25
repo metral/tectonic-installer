@@ -24,6 +24,8 @@ import { BM_PowerOn } from './components/bm-poweron';
 import { BM_Size } from './components/bm-size';
 import { BM_SSHKeys } from './components/bm-sshkeys';
 
+import { BM_TF_PowerOn } from './components/bm-tf-poweron';
+
 import { AWS_CloudCredentials } from './components/aws-cloud-credentials';
 import { AWS_ClusterInfo } from './components/aws-cluster-info';
 import { AWS_DefineNodes } from './components/aws-define-nodes';
@@ -37,6 +39,7 @@ import {
   AWS,
   AWS_TF,
   BARE_METAL,
+  BARE_METAL_TF,
   isSupported,
 } from './platforms';
 
@@ -156,6 +159,12 @@ const bmWorkersPage = {
   title: 'Define Workers',
 };
 
+const bmTFPowerOnPage = {
+  path: '/boot/bm-tf/poweron',
+  component: BM_TF_PowerOn,
+  title: 'Start Installation',
+};
+
 
 // AWS pages
 const awsClusterInfoPage = {
@@ -243,6 +252,10 @@ export const sections = new Map([
   ['bootBaremetal', [
     bmPowerOnPage,
     bmConnectPage,
+    successPage,
+  ]],
+  ['bootBaremetalTF', [
+    bmTFPowerOnPage,
     successPage,
   ]],
   ['bootAWS', [
@@ -366,6 +379,11 @@ const platformToSection = {
     choose: new Trail([sections.choose, sections.defineBaremetal]),
     define: new Trail([sections.defineBaremetal], [submitDefinitionPage]),
     boot: new Trail([sections.bootBaremetal], null, {canReset: true}),
+  },
+  [BARE_METAL_TF]: {
+    choose: new Trail([sections.choose, sections.defineBaremetal]),
+    define: new Trail([sections.defineBaremetal], [submitDefinitionPage]),
+    boot: new Trail([sections.bootBaremetalTF]),
   },
 };
 
