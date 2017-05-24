@@ -71,7 +71,7 @@ stream {
     resolver 10.255.0.27;
 
     map $protocol $pro {
-        default '$${master-ip}:443';
+        default '$${api_internal_ip_address}:443';
     }
 
     server {
@@ -95,7 +95,7 @@ sudo systemctl start nginx
 EOF
 
   vars {
-    master-ip = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
+    api_internal_ip_address = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
   }
 
 }
