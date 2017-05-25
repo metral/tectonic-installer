@@ -75,7 +75,7 @@ resource "null_resource" "tectonic" {
   }
 
   connection {
-    host = "${module.masters.ip_address[0]}"
+    host  = "${module.masters.ip_address[0]}"
     user  = "core"
     agent = true
   }
