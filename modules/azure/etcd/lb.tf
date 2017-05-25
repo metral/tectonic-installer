@@ -59,7 +59,7 @@ resource "null_resource" "scripts_nsupdate" {
   depends_on = ["local_file.nsupdate"]
 
   triggers {
-      md5 = "${md5(data.template_file.scripts_nsupdate.rendered)}"
+    md5 = "${md5(data.template_file.scripts_nsupdate.rendered)}"
   }
 
   provisioner "local-exec" {
