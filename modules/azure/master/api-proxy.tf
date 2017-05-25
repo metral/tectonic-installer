@@ -2,17 +2,18 @@
 ## Related to: https://github.com/Microsoft/azure-docs/blob/master/articles/load-balancer/load-balancer-internal-overview.md#limitations
 
 variable "proxy_vm_size" {
-  type = "string"
+  type    = "string"
   default = "Standard_DS2_v2"
 }
 
 variable "proxy_count" {
-  type = "string"
+  type    = "string"
   default = "1"
 }
 
 variable proxy_storage_profile_image_reference {
   type = "map"
+
   default = {
     publisher = "RedHat"
     offer     = "RHEL"
@@ -40,7 +41,6 @@ resource "azurerm_storage_container" "proxy" {
 }
 
 data "template_file" "scripts_proxy_bootstrap" {
-
   template = <<EOF
 #!/bin/bash
 
@@ -97,7 +97,6 @@ EOF
   vars {
     api_internal_ip_address = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
   }
-
 }
 
 resource "local_file" "scripts_proxy_bootstrap" {
@@ -107,14 +106,14 @@ resource "local_file" "scripts_proxy_bootstrap" {
 
 resource "null_resource" "scripts_proxy_bootstrap" {
   depends_on = ["azurerm_storage_account.tectonic_master", "local_file.scripts_proxy_bootstrap"]
+
   triggers {
-      md5 = "${md5(data.template_file.scripts_proxy_bootstrap.rendered)}"
+    md5 = "${md5(data.template_file.scripts_proxy_bootstrap.rendered)}"
   }
 
   provisioner "local-exec" {
     command = "az storage blob upload --container-name ${azurerm_storage_container.proxy.name} --file ${path.cwd}/generated/proxy/api-proxy-bootstrap.sh --name api-proxy-bootstrap.sh --account-name ${azurerm_storage_account.proxy.name} --account-key ${azurerm_storage_account.proxy.primary_access_key}"
   }
-
 }
 
 resource "azurerm_virtual_machine_scale_set" "api-proxy" {
@@ -136,11 +135,12 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
   }
 
   os_profile_linux_config {
-      disable_password_authentication = true
-      ssh_keys {
-        path     = "/home/core/.ssh/authorized_keys"
-        key_data = "${file(var.public_ssh_key)}"
-      }
+    disable_password_authentication = true
+
+    ssh_keys {
+      path     = "/home/core/.ssh/authorized_keys"
+      key_data = "${file(var.public_ssh_key)}"
+    }
   }
 
   network_profile {
@@ -163,20 +163,20 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
   }
 
   storage_profile_image_reference {
-      publisher = "${var.proxy_storage_profile_image_reference["publisher"]}"
-      offer     = "${var.proxy_storage_profile_image_reference["offer"]}"
-      sku       = "${var.proxy_storage_profile_image_reference["sku"]}"
-      version   = "${var.proxy_storage_profile_image_reference["version"]}"
+    publisher = "${var.proxy_storage_profile_image_reference["publisher"]}"
+    offer     = "${var.proxy_storage_profile_image_reference["offer"]}"
+    sku       = "${var.proxy_storage_profile_image_reference["sku"]}"
+    version   = "${var.proxy_storage_profile_image_reference["version"]}"
   }
 
-  extension { 
-      name                 = "${var.cluster_name}-api-proxy"
-      publisher            = "Microsoft.Azure.Extensions"
-      type                 = "CustomScript"
-      type_handler_version = "2.0"
-      auto_upgrade_minor_version = true
+  extension {
+    name                       = "${var.cluster_name}-api-proxy"
+    publisher                  = "Microsoft.Azure.Extensions"
+    type                       = "CustomScript"
+    type_handler_version       = "2.0"
+    auto_upgrade_minor_version = true
 
-      settings = <<SETTINGS
+    settings = <<SETTINGS
         {
           "fileUris": [
             "${azurerm_storage_account.proxy.primary_blob_endpoint}${azurerm_storage_container.proxy.name}/api-proxy-bootstrap.sh"
@@ -186,7 +186,7 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
         }
 SETTINGS
 
-      protected_settings = <<PSETTINGS
+    protected_settings = <<PSETTINGS
         {
           "storageAccountName": "${azurerm_storage_account.proxy.name}",
           "storageAccountKey": "${azurerm_storage_account.proxy.primary_access_key}"
@@ -194,8 +194,7 @@ SETTINGS
 PSETTINGS
   }
 
-#  lifecycle {
-#    create_before_destroy = true
-#  }
-
+  #  lifecycle {
+  #    create_before_destroy = true
+  #  }
 }
