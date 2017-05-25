@@ -32,8 +32,8 @@ send
 EOF
 
   vars {
-	cluster_name = "${var.cluster_name}"
-	base_domain = "${var.base_domain}"
+    cluster_name = "${var.cluster_name}"
+    base_domain  = "${var.base_domain}"
 
     ip_address           = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
     console_ip_address   = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.1.private_ip_address}"
@@ -50,7 +50,7 @@ resource "null_resource" "scripts_nsupdate" {
   depends_on = ["local_file.nsupdate"]
 
   triggers {
-      md5 = "${md5(data.template_file.scripts_nsupdate.rendered)}"
+    md5 = "${md5(data.template_file.scripts_nsupdate.rendered)}"
   }
 
   provisioner "local-exec" {
