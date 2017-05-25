@@ -7,8 +7,8 @@ resource "azurerm_lb" "proxy_lb" {
   resource_group_name = "${var.resource_group_name}"
 
   frontend_ip_configuration {
-    name = "api-proxy"
-    subnet_id = "${var.subnet}"
+    name                          = "api-proxy"
+    subnet_id                     = "${var.subnet}"
     private_ip_address_allocation = "dynamic"
   }
 }
@@ -39,4 +39,3 @@ resource "azurerm_lb_probe" "api-proxy-lb" {
   protocol            = "tcp"
   port                = 443
 }
-
