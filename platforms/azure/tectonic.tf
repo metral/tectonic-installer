@@ -65,12 +65,14 @@ module "tectonic" {
 resource "null_resource" "tectonic" {
   depends_on = ["module.tectonic", "module.masters"]
 
+  # We can't SSH into the proxy, so we select the first master node to copy
+  # the cluster assets and start Tectonic.
   triggers {
-    api-endpoint = "${module.masters.api_external_fqdn}"
+    api-endpoint = "${module.masters.ip_address[0]}"
   }
 
   connection {
-    host  = "${module.masters.api_external_fqdn}"
+    host = "${module.masters.ip_address[0]}"
     user  = "core"
     agent = true
   }
