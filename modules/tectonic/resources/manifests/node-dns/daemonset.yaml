@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: node-dns
+  namespace: node-dns
+  labels:
+    tier: node
+    app: node-dns
+spec:
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        tier: node
+        app: node-dns
+    spec:
+      hostPID: true
+      hostNetwork: true
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+      - name: node-dns
+        image: quay.io/metral/node-dns:v0.0.1
+        command:
+          - "/bin/bash"
+          - "-c"
+          - "chmod +x /opt/node-dns/node-dns.sh ; /opt/node-dns/node-dns.sh"
+        securityContext:
+          privileged: true
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: etc
+          mountPath: /etc/
+        - name: node-dns-cfg
+          mountPath: /opt/node-dns/
+      volumes:
+        - name: etc
+          hostPath:
+            path: /etc/
+        - name: node-dns-cfg
+          configMap:
+            name: node-dns-cfg
