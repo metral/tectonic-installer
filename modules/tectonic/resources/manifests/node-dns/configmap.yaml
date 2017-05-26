@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-dns-cfg
+  namespace: node-dns
+  labels:
+    tier: node
+    app: node-dns
+data:
+  node-dns.sh: |
+    #!/bin/bash
+
+    # DNS settings
+    BASE_DOMAIN="cdx.vpc.starbucks.net"
+    NAMESERVER=10.255.0.27
+
+    # IP addr for the host machine of the Pod
+    HOST_IP=`ip -4 a s eth0 | grep inet | awk '{print $2}' | cut -d "/" -f 1`
+
+    # Overwrite DNS resolver
+    cp /etc/resolv.conf /etc/resolv.conf.`date +%s`
+    rm /etc/resolv.conf
+
+    cat > /etc/resolv.conf <<EOF
+    nameserver $NAMESERVER
+    search $BASE_DOMAIN
+    EOF
+
+    ## update the DNS records
+    cat > /etc/node-dns-records.txt <<-END
+    update delete $HOSTNAME.$BASE_DOMAIN A
+    update add $HOSTNAME.$BASE_DOMAIN 0 A $HOST_IP
+    send
+    END
+
+    nsupdate -d /etc/node-dns-records.txt
+
+    # Rekick kubelet to flush DNS cache
+    kill `pidof kubelet`
+
+    while true
+    do
+      sleep 1
+    done
