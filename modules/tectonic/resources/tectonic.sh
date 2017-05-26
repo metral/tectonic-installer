@@ -81,6 +81,16 @@ done
 wait_for_pods kube-system
 
 # Creating resources
+echo "Creating Node DNS to Register Nodes in DNS"
+kubectl create -f node-dns/namespace.yaml
+kubectl create -f node-dns/configmap.yaml
+kubectl create -f node-dns/daemonset.yaml
+wait_for_pods node-dns
+
+echo "Performing Rolling Update on APIServer to flush DNS cache for Node DNS"
+kubectl patch ds/kube-apiserver -n kube-system --patch "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+wait_for_pods kube-system
+
 echo "Creating Tectonic Namespace"
 kubectl create -f namespace.yaml
 
