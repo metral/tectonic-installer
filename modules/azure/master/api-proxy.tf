@@ -59,7 +59,7 @@ gpgcheck=0
 enabled=1
 NGINXREPO'
 
-sudo yum update -y
+sudo yum update --exclude=WALinuxAgent* -y
 sudo yum install -y nginx
 
 sudo bash -c 'cat > nginx.conf << "NGINXCONF"
