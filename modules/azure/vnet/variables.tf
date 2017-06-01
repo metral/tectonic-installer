@@ -73,6 +73,21 @@ variable "ssh_network_external" {
   default = ""
 }
 
+variable "byo_etcd_nsg" {
+  type    = "string"
+  default = ""
+}
+
+variable "byo_master_nsg" {
+  type    = "string"
+  default = ""
+}
+
+variable "byo_worker_nsg" {
+  type    = "string"
+  default = ""
+}
+
 variable "etcd_nsg_name" {
   type    = "string"
   default = ""

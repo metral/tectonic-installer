@@ -1,4 +1,5 @@
 resource "azurerm_network_security_group" "worker" {
+  count               = "${!var.byo_worker_nsg ? 1 : 0}"
   name                = "${var.tectonic_cluster_name}-worker-nsg"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
