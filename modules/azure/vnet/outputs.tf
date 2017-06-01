@@ -29,3 +29,17 @@ output "worker_cidr" {
 output "admin_cidr" {
   value = "${azurerm_subnet.admin_subnet.address_prefix}"
 }
+
+output "etcd_nsg_name" {
+  value = "${azurerm_network_security_group.etcd.name}"
+}
+
+# TODO: Allow user to provide their own network
+output "master_nsg_name" {
+  value = "${azurerm_network_security_group.master.name}"
+}
+
+# TODO: Allow user to provide their own network
+output "worker_nsg_name" {
+  value = "${azurerm_network_security_group.worker.name}"
+}

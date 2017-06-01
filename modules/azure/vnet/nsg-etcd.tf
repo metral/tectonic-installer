@@ -17,7 +17,7 @@ resource "azurerm_network_security_rule" "etcd_egress" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 # TODO: Remove in lieu of below rules
@@ -32,7 +32,7 @@ resource "azurerm_network_security_rule" "etcd_egress" {
 #  source_address_prefix       = "*"
 #  destination_address_prefix  = "*"
 #  resource_group_name         = "${var.resource_group_name}"
-#  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+#  network_security_group_name = "${var.etcd_nsg_name}"
 #}
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh" {
@@ -46,7 +46,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh" {
   source_address_prefix       = "${var.ssh_network_internal}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 # TODO: Add external SSH rule
@@ -61,7 +61,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_admin" {
   source_address_prefix       = "${var.ssh_network_external}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh_self" {
@@ -77,7 +77,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_self" {
   source_address_prefix       = "${var.etcd_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh_from_master" {
@@ -93,7 +93,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_from_master" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_client_self" {
@@ -109,7 +109,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_self" {
   source_address_prefix       = "${var.etcd_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_client_master" {
@@ -125,7 +125,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_master" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_client_worker" {
@@ -141,7 +141,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_worker" {
   source_address_prefix       = "${var.worker_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_peer" {
@@ -157,5 +157,5 @@ resource "azurerm_network_security_rule" "etcd_ingress_peer" {
   source_address_prefix       = "${var.etcd_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.etcd.name}"
+  network_security_group_name = "${var.etcd_nsg_name}"
 }

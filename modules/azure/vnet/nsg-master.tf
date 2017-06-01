@@ -15,7 +15,7 @@ resource "azurerm_network_security_rule" "master_egress" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_ssh" {
@@ -29,7 +29,7 @@ resource "azurerm_network_security_rule" "master_ingress_ssh" {
   source_address_prefix       = "${var.ssh_network_internal}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 # TODO: Add external SSH rule
@@ -44,7 +44,7 @@ resource "azurerm_network_security_rule" "master_ingress_ssh_admin" {
   source_address_prefix       = "${var.ssh_network_external}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_flannel" {
@@ -60,7 +60,7 @@ resource "azurerm_network_security_rule" "master_ingress_flannel" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_flannel_from_worker" {
@@ -76,7 +76,7 @@ resource "azurerm_network_security_rule" "master_ingress_flannel_from_worker" {
   source_address_prefix       = "${var.worker_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 # TODO: Add rule(s) for Tectonic ingress
@@ -94,7 +94,7 @@ resource "azurerm_network_security_rule" "master_ingress_node_exporter" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_node_exporter_from_worker" {
@@ -110,7 +110,7 @@ resource "azurerm_network_security_rule" "master_ingress_node_exporter_from_work
   source_address_prefix       = "${var.worker_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_services" {
@@ -126,7 +126,7 @@ resource "azurerm_network_security_rule" "master_ingress_services" {
   source_address_prefix       = "VirtualNetwork"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_services_from_console" {
@@ -142,7 +142,7 @@ resource "azurerm_network_security_rule" "master_ingress_services_from_console" 
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_etcd_lb" {
@@ -157,7 +157,7 @@ resource "azurerm_network_security_rule" "master_ingress_etcd_lb" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"                                             #"${var.etcd_lb_ip}"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_etcd_self" {
@@ -173,7 +173,7 @@ resource "azurerm_network_security_rule" "master_ingress_etcd_self" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_bootstrap_etcd" {
@@ -189,7 +189,7 @@ resource "azurerm_network_security_rule" "master_ingress_bootstrap_etcd" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_kubelet_insecure" {
@@ -205,7 +205,7 @@ resource "azurerm_network_security_rule" "master_ingress_kubelet_insecure" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_kubelet_insecure_from_worker" {
@@ -221,7 +221,7 @@ resource "azurerm_network_security_rule" "master_ingress_kubelet_insecure_from_w
   source_address_prefix       = "${var.worker_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_kubelet_secure" {
@@ -237,7 +237,7 @@ resource "azurerm_network_security_rule" "master_ingress_kubelet_secure" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 resource "azurerm_network_security_rule" "master_ingress_kubelet_secure_from_worker" {
@@ -253,7 +253,7 @@ resource "azurerm_network_security_rule" "master_ingress_kubelet_secure_from_wor
   source_address_prefix       = "${var.worker_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 # TODO: Review NSG
@@ -268,7 +268,7 @@ resource "azurerm_network_security_rule" "master_ingress_http" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 # TODO: Review NSG
@@ -283,7 +283,7 @@ resource "azurerm_network_security_rule" "master_ingress_https" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 # TODO: Review NSG
@@ -300,7 +300,7 @@ resource "azurerm_network_security_rule" "master_ingress_heapster" {
   source_address_prefix       = "${var.master_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }
 
 # TODO: Review NSG
@@ -317,5 +317,5 @@ resource "azurerm_network_security_rule" "master_ingress_heapster_from_worker" {
   source_address_prefix       = "${var.worker_cidr}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.resource_group_name}"
-  network_security_group_name = "${azurerm_network_security_group.master.name}"
+  network_security_group_name = "${var.master_nsg_name}"
 }

@@ -164,3 +164,36 @@ EOF
 
   default = ""
 }
+
+variable "tectonic_azure_byo_etcd_nsg" {
+  type        = "string"
+  description = ""
+  default     = "false"
+}
+
+variable "tectonic_azure_byo_master_nsg" {
+  type = "string"
+  description = ""
+  default = "false"
+}
+
+variable "tectonic_azure_byo_worker_nsg" {
+  type = "string"
+  description = ""
+  default = "false"
+}
+
+variable "tectonic_azure_etcd_nsg_name" {
+  type        = "string"
+  description = "(optional)"
+}
+
+variable "tectonic_azure_master_nsg_name" {
+  type = "string"
+  description = "(optional)"
+}
+
+variable "tectonic_azure_worker_nsg_name" {
+  type = "string"
+  description = "(optional)"
+}
