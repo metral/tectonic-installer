@@ -165,19 +165,19 @@ EOF
   default = ""
 }
 
-variable "tectonic_azure_byo_etcd_nsg" {
+variable "tectonic_azure_external_etcd_nsg" {
   type        = "string"
   description = ""
   default     = "false"
 }
 
-variable "tectonic_azure_byo_master_nsg" {
+variable "tectonic_azure_external_master_nsg" {
   type = "string"
   description = ""
   default = "false"
 }
 
-variable "tectonic_azure_byo_worker_nsg" {
+variable "tectonic_azure_external_worker_nsg" {
   type = "string"
   description = ""
   default = "false"
