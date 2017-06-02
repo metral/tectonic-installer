@@ -183,6 +183,11 @@ variable "tectonic_azure_external_worker_nsg" {
   default = "false"
 }
 
+variable "tectonic_azure_external_nsg_rsg_name" {
+  type        = "string"
+  description = "(optional)"
+}
+
 variable "tectonic_azure_etcd_nsg_name" {
   type        = "string"
   description = "(optional)"

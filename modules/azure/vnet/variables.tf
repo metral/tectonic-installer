@@ -88,6 +88,10 @@ variable "external_worker_nsg" {
   default = ""
 }
 
+variable "nsg_rsg_name" {
+  type    = "string"
+}
+
 variable "etcd_nsg_name" {
   type    = "string"
   default = ""
