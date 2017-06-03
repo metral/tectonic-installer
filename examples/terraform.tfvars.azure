@@ -97,9 +97,6 @@ tectonic_cluster_cidr = "10.2.0.0/16"
 // Warning: Special characters in the name like '.' may cause errors on OpenStack platforms due to resource name constraints.
 tectonic_cluster_name = ""
 
-// Specifies if SSH access should be allowed from external networks
-tectonic_enable_ssh_external = "false"
-
 // (optional) The path of the file containing the CA certificate for TLS communication with etcd.
 // 
 // Note: This works only when used in conjunction with an external etcd cluster.
