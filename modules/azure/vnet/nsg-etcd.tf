@@ -16,8 +16,8 @@ resource "azurerm_network_security_rule" "etcd_egress" {
   destination_port_range      = "*"
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh" {
@@ -31,8 +31,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh" {
   destination_port_range      = "22"
   source_address_prefix       = "${var.ssh_network_internal}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 # TODO: Add external SSH rule
@@ -47,8 +47,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_admin" {
   destination_port_range      = "22"
   source_address_prefix       = "${var.ssh_network_external}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh_self" {
@@ -64,8 +64,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_self" {
   # TODO: Need to allow traffic from self
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh_from_master" {
@@ -81,8 +81,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_from_master" {
   # TODO: Need to allow traffic from master
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_client_self" {
@@ -98,8 +98,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_self" {
   # TODO: Need to allow traffic from self
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_client_master" {
@@ -115,8 +115,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_master" {
   # TODO: Need to allow traffic from master
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_client_worker" {
@@ -132,8 +132,8 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_worker" {
   # TODO: Need to allow traffic from workers
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "etcd_ingress_peer" {
@@ -149,6 +149,6 @@ resource "azurerm_network_security_rule" "etcd_ingress_peer" {
   # TODO: Need to allow traffic from self
   source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${var.external_etcd_nsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_etcd_nsg_name == "" ? join("",azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }

@@ -16,8 +16,8 @@ resource "azurerm_network_security_rule" "api_egress" {
   destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${azurerm_network_security_group.api.name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_api_nsg_name == "" ? join("",azurerm_network_security_group.api.*.name) : var.external_api_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "api_ingress_https" {
@@ -31,8 +31,8 @@ resource "azurerm_network_security_rule" "api_ingress_https" {
   destination_port_range      = "443"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${azurerm_network_security_group.api.name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_api_nsg_name == "" ? join("",azurerm_network_security_group.api.*.name) : var.external_api_nsg_name }"
 }
 
 resource "azurerm_network_security_group" "console" {
@@ -53,8 +53,8 @@ resource "azurerm_network_security_rule" "console_egress" {
   destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${azurerm_network_security_group.console.name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_api_nsg_name == "" ?  join("",azurerm_network_security_group.console.*.name) : var.external_api_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "console_ingress_https" {
@@ -68,8 +68,8 @@ resource "azurerm_network_security_rule" "console_ingress_https" {
   destination_port_range      = "443"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${azurerm_network_security_group.console.name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_api_nsg_name == "" ?  join("",azurerm_network_security_group.console.*.name) : var.external_api_nsg_name }"
 }
 
 resource "azurerm_network_security_rule" "console_ingress_http" {
@@ -83,6 +83,6 @@ resource "azurerm_network_security_rule" "console_ingress_http" {
   destination_port_range      = "80"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.external_nsg_rsg_name}"
-  network_security_group_name = "${azurerm_network_security_group.console.name}"
+  resource_group_name         = "${var.external_nsg_rsg_name == "" ? var.resource_group_name : var.external_nsg_rsg_name}"
+  network_security_group_name = "${var.external_api_nsg_name == "" ?  join("",azurerm_network_security_group.console.*.name) : var.external_api_nsg_name }"
 }
