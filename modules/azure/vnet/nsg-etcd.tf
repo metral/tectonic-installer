@@ -3,8 +3,6 @@ resource "azurerm_network_security_group" "etcd" {
   name                = "${var.tectonic_cluster_name}-etcd-nsg"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
-
-  #depends_on          = ["azurerm_subnet.master_subnet.id"]
 }
 
 resource "azurerm_network_security_rule" "etcd_egress" {
@@ -21,21 +19,6 @@ resource "azurerm_network_security_rule" "etcd_egress" {
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
 }
-
-# TODO: Remove in lieu of below rules
-#resource "azurerm_network_security_rule" "etcd_ingress_ssh" {
-#  name                        = "${var.tectonic_cluster_name}-etcd_ingress_ssh"
-#  priority                    = 300
-#  direction                   = "Inbound"
-#  access                      = "Allow"
-#  protocol                    = "tcp"
-#  source_port_range           = "*"
-#  destination_port_range      = "22"
-#  source_address_prefix       = "*"
-#  destination_address_prefix  = "*"
-#  resource_group_name         = "${var.external_nsg_rsg_name}"
-#  network_security_group_name = "${var.external_etcd_nsg_name}"
-#}
 
 resource "azurerm_network_security_rule" "etcd_ingress_ssh" {
   count                       = "${var.create_etcd_nsg_rules ? 1 : 0}"
