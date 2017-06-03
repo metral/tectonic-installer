@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "etcd" {
-  count               = "${!var.external_etcd_nsg ? 1 : 0}"
+  count               = "${var.external_etcd_nsg_name == "" ? 1 : 0}"
   name                = "${var.tectonic_cluster_name}-etcd-nsg"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"

@@ -73,21 +73,6 @@ variable "ssh_network_external" {
   default = ""
 }
 
-variable "external_etcd_nsg" {
-  type    = "string"
-  default = ""
-}
-
-variable "external_master_nsg" {
-  type    = "string"
-  default = ""
-}
-
-variable "external_worker_nsg" {
-  type    = "string"
-  default = ""
-}
-
 variable "nsg_rsg_name" {
   type = "string"
 }

@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "master" {
-  count               = "${!var.external_master_nsg ? 1 : 0}"
+  count               = "${var.external_master_nsg_name == "" ? 1 : 0}"
   name                = "${var.tectonic_cluster_name}-master-nsg"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"

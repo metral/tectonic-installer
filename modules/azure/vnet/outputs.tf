@@ -31,15 +31,15 @@ output "admin_cidr" {
 }
 
 output "etcd_nsg_name" {
-  value = "${azurerm_network_security_group.etcd.name}"
+  value = "${var.external_etcd_nsg_name == "" ? join(" ", azurerm_network_security_group.etcd.*.name : var.etcd_nsg_name }"
 }
 
 # TODO: Allow user to provide their own network
 output "master_nsg_name" {
-  value = "${azurerm_network_security_group.master.name}"
+  value = "${var.external_master_nsg_name == "" ? join(" ", azurerm_network_security_group.master.*.name : var.master_nsg_name }"
 }
 
 # TODO: Allow user to provide their own network
 output "worker_nsg_name" {
-  value = "${azurerm_network_security_group.worker.name}"
+  value = "${var.external_worker_nsg_name == "" ? join(" ", azurerm_network_security_group.worker.*.name : var.worker_nsg_name }"
 }
