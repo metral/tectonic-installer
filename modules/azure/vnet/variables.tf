@@ -77,6 +77,11 @@ variable "external_etcd_nsg_name" {
   default = ""
 }
 
+variable "external_api_nsg_name" {
+  type    = "string"
+  default = ""
+}
+
 variable "external_master_nsg_name" {
   type    = "string"
   default = ""
@@ -85,6 +90,10 @@ variable "external_master_nsg_name" {
 variable "external_worker_nsg_name" {
   type    = "string"
   default = ""
+}
+
+variable "create_api_nsg_rules" {
+  default = false
 }
 
 variable "create_etcd_nsg_rules" {
