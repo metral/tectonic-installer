@@ -1,10 +1,12 @@
 resource "azurerm_network_security_group" "api" {
+  count               = "${var.external_api_nsg_name == "" ? 1 : 0}"
   name                = "${var.tectonic_cluster_name}-api-nsg"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
 }
 
 resource "azurerm_network_security_rule" "api_egress" {
+  count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-api_egress"
   priority                    = 100
   direction                   = "Outbound"
@@ -21,6 +23,7 @@ resource "azurerm_network_security_rule" "api_egress" {
 }
 
 resource "azurerm_network_security_rule" "api_ingress_https" {
+  count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-api_ingress_https"
   priority                    = 200
   direction                   = "Inbound"
@@ -37,6 +40,7 @@ resource "azurerm_network_security_rule" "api_ingress_https" {
 }
 
 resource "azurerm_network_security_group" "console" {
+  count               = "${var.create_api_nsg_rules ? 1 : 0}"
   name                = "${var.tectonic_cluster_name}-console-nsg"
   location            = "${var.location}"
   resource_group_name = "${var.external_nsg_rsg_name}"
@@ -45,6 +49,7 @@ resource "azurerm_network_security_group" "console" {
 }
 
 resource "azurerm_network_security_rule" "console_egress" {
+  count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-console_egress"
   priority                    = 100
   direction                   = "Outbound"
@@ -61,6 +66,7 @@ resource "azurerm_network_security_rule" "console_egress" {
 }
 
 resource "azurerm_network_security_rule" "console_ingress_https" {
+  count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-console_ingress_https"
   priority                    = 200
   direction                   = "Inbound"
@@ -77,6 +83,7 @@ resource "azurerm_network_security_rule" "console_ingress_https" {
 }
 
 resource "azurerm_network_security_rule" "console_ingress_http" {
+  count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-console_ingress_http"
   priority                    = 300
   direction                   = "Inbound"
