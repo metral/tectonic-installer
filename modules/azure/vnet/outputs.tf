@@ -25,11 +25,6 @@ output "worker_cidr" {
   value = "${azurerm_subnet.worker_subnet.address_prefix}"
 }
 
-# TODO: Allow user to provide their own network
-output "admin_cidr" {
-  value = "${azurerm_subnet.admin_subnet.address_prefix}"
-}
-
 output "etcd_nsg_name" {
   value = "${var.external_etcd_nsg_name == "" ? join(" ", azurerm_network_security_group.etcd.*.name) : var.external_etcd_nsg_name }"
 }

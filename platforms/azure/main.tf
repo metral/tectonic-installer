@@ -18,7 +18,6 @@ module "vnet" {
   etcd_cidr                 = "${module.vnet.etcd_cidr}"
   master_cidr               = "${module.vnet.master_cidr}"
   worker_cidr               = "${module.vnet.worker_cidr}"
-  admin_cidr                = "${module.vnet.admin_cidr}"
   external_vnet_name        = "${var.tectonic_azure_external_vnet_name}"
   external_master_subnet_id = "${var.tectonic_azure_external_master_subnet_id}"
   external_worker_subnet_id = "${var.tectonic_azure_external_worker_subnet_id}"

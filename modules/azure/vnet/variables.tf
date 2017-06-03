@@ -58,11 +58,6 @@ variable "worker_cidr" {
   default = ""
 }
 
-variable "admin_cidr" {
-  type    = "string"
-  default = ""
-}
-
 variable "ssh_network_internal" {
   type    = "string"
   default = ""
