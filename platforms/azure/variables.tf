@@ -31,18 +31,6 @@ EOF
   default = "*"
 }
 
-# TODO: Check if similar var exists for AWS
-variable "tectonic_use_jumpbox" {
-  type = "string"
-
-  description = <<EOF
-(optional) Specifies whether a jumpbox should be created to manage cluster nodes.
-Experimental - DO NOT USE
-EOF
-
-  default = "false"
-}
-
 variable "tectonic_azure_dns_resource_group" {
   type    = "string"
   default = "tectonic-dns-group"

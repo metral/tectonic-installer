@@ -177,10 +177,6 @@ tectonic_ssh_key = ""
 // Allowed values: [network CIDR (i.e., 10.0.0.0/16) | `VirtualNetwork` | `Internet` | `*` ]
 tectonic_ssh_network_int = "VirtualNetwork"
 
-// (optional) Specifies whether a jumpbox should be created to manage cluster nodes.
-// Experimental - DO NOT USE
-// tectonic_use_jumpbox = "false"
-
 // If set to true, a vanilla Kubernetes cluster will be deployed, omitting any Tectonic assets.
 tectonic_vanilla_k8s = false
 
