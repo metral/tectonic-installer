@@ -89,7 +89,7 @@ variable "external_worker_nsg" {
 }
 
 variable "nsg_rsg_name" {
-  type    = "string"
+  type = "string"
 }
 
 variable "etcd_nsg_name" {

@@ -156,7 +156,7 @@ resource "azurerm_network_security_rule" "master_ingress_etcd_lb" {
   destination_port_range = "2379"
 
   source_address_prefix       = "*"
-  destination_address_prefix  = "*"                                             #"${var.etcd_lb_ip}"
+  destination_address_prefix  = "*"                      #"${var.etcd_lb_ip}"
   resource_group_name         = "${var.nsg_rsg_name}"
   network_security_group_name = "${var.master_nsg_name}"
 }

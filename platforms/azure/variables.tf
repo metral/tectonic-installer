@@ -172,15 +172,15 @@ variable "tectonic_azure_external_etcd_nsg" {
 }
 
 variable "tectonic_azure_external_master_nsg" {
-  type = "string"
+  type        = "string"
   description = ""
-  default = "false"
+  default     = "false"
 }
 
 variable "tectonic_azure_external_worker_nsg" {
-  type = "string"
+  type        = "string"
   description = ""
-  default = "false"
+  default     = "false"
 }
 
 variable "tectonic_azure_external_nsg_rsg_name" {
@@ -194,11 +194,11 @@ variable "tectonic_azure_etcd_nsg_name" {
 }
 
 variable "tectonic_azure_master_nsg_name" {
-  type = "string"
+  type        = "string"
   description = "(optional)"
 }
 
 variable "tectonic_azure_worker_nsg_name" {
-  type = "string"
+  type        = "string"
   description = "(optional)"
 }
