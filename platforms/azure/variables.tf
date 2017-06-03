@@ -209,3 +209,33 @@ EOF
 
   default = ""
 }
+
+variable "tectonic_azure_create_etcd_nsg_rules" {
+  description = <<EOF
+If set to true, all required rules for etcd will be created in the Network
+Security Group. Otherwise, no rules are added to the NSG and are expected
+to already exist.
+EOF
+
+  default = true
+}
+
+variable "tectonic_azure_create_master_nsg_rules" {
+  description = <<EOF
+If set to true, all required rules for the Masters will be created in the Network
+Security Group. Otherwise, no rules are added to the NSG and are expected
+to already exist.
+EOF
+
+  default = true
+}
+
+variable "tectonic_azure_create_worker_nsg_rules" {
+  description = <<EOF
+If set to true, all required rules for the Workers will be created in the Network
+Security Group. Otherwise, no rules are added to the NSG and are expected
+to already exist.
+EOF
+
+  default = true
+}

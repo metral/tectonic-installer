@@ -86,3 +86,15 @@ variable "external_worker_nsg_name" {
   type    = "string"
   default = ""
 }
+
+variable "create_etcd_nsg_rules" {
+  default = false
+}
+
+variable "create_master_nsg_rules" {
+  default = false
+}
+
+variable "create_worker_nsg_rules" {
+  default = false
+}
