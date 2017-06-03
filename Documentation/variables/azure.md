@@ -7,9 +7,14 @@ This document gives an overview of variables used in the Azure platform of the T
 | Name | Description | Type | Default |
 |------|-------------|:----:|:-----:|
 | tectonic_azure_config_version | (internal) This declares the version of the Azure configuration variables. It has no impact on generated assets but declares the version contract of the configuration. | string | `1.0` |
+| tectonic_azure_create_api_nsg_rules | If set to true, all required rules for the Tectonic Console and Kubernetes API Server will be created in its Network Security Group. Otherwise, no rules are added to the NSG and are expected to already exist. | string | `true` |
 | tectonic_azure_create_dns_zone | If set to true, create an Azure DNS zone | string | `true` |
+| tectonic_azure_create_etcd_nsg_rules | If set to true, all required rules for etcd will be created in its Network Security Group. Otherwise, no rules are added to the NSG and are expected to already exist. | string | `true` |
+| tectonic_azure_create_master_nsg_rules | If set to true, all required rules for the Masters will be created in its Network Security Group. Otherwise, no rules are added to the NSG and are expected to already exist. | string | `true` |
+| tectonic_azure_create_worker_nsg_rules | If set to true, all required rules for the Workers will be created in its Network Security Group. Otherwise, no rules are added to the NSG and are expected to already exist. | string | `true` |
 | tectonic_azure_dns_resource_group |  | string | `tectonic-dns-group` |
 | tectonic_azure_etcd_vm_size | Instance size for the etcd node(s). Example: Standard_DS2_v2. | string | `Standard_DS2_v2` |
+| tectonic_azure_external_api_nsg_name | (optional) The name of the external Network Security Group used for the Tectonic Console and Kubernetes API Server. This depends on `tectonic_azure_external_nsg_rsg_name` to also be specified. | string | `` |
 | tectonic_azure_external_etcd_nsg_name | (optional) The name of the external Network Security Group used for etcd. This depends on `tectonic_azure_external_nsg_rsg_name` to also be specified. | string | `` |
 | tectonic_azure_external_master_nsg_name | (optional) The name of the external Network Security Group used for masters. This depends on `tectonic_azure_external_nsg_rsg_name` to also be specified. | string | `` |
 | tectonic_azure_external_master_subnet_id | (optional) Subnet ID within an existing VNet to deploy master nodes into. Required to use an existing VNet.<br><br>Example: the subnet ID starts with `"/subscriptions/{subscriptionId}"` or `"/providers/{resourceProviderNamespace}"`. | string | `` |

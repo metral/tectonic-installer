@@ -10,14 +10,39 @@ tectonic_admin_email = ""
 // Note: This field MUST be set manually prior to creating the cluster.
 tectonic_admin_password_hash = ""
 
+// If set to true, all required rules for the Tectonic Console and Kubernetes
+// API Server will be created in its Network Security Group. Otherwise, no rules
+// are added to the NSG and are expected to already exist.
+tectonic_azure_create_api_nsg_rules = true
+
 // If set to true, create an Azure DNS zone
 tectonic_azure_create_dns_zone = true
+
+// If set to true, all required rules for etcd will be created in its Network
+// Security Group. Otherwise, no rules are added to the NSG and are expected
+// to already exist.
+tectonic_azure_create_etcd_nsg_rules = true
+
+// If set to true, all required rules for the Masters will be created in its Network
+// Security Group. Otherwise, no rules are added to the NSG and are expected
+// to already exist.
+tectonic_azure_create_master_nsg_rules = true
+
+// If set to true, all required rules for the Workers will be created in its Network
+// Security Group. Otherwise, no rules are added to the NSG and are expected
+// to already exist.
+tectonic_azure_create_worker_nsg_rules = true
 
 // 
 tectonic_azure_dns_resource_group = "tectonic-dns-group"
 
 // Instance size for the etcd node(s). Example: Standard_DS2_v2.
 tectonic_azure_etcd_vm_size = "Standard_DS2_v2"
+
+// (optional) The name of the external Network Security Group used for the
+// Tectonic Console and Kubernetes API Server. This depends on
+// `tectonic_azure_external_nsg_rsg_name` to also be specified.
+// tectonic_azure_external_api_nsg_name = ""
 
 // (optional) The name of the external Network Security Group used for etcd. This
 // depends on `tectonic_azure_external_nsg_rsg_name` to also be specified.
