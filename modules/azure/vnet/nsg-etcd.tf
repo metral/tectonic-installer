@@ -75,7 +75,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_self" {
   destination_port_range = "22"
 
   # TODO: Need to allow traffic from self
-  source_address_prefix       = "${var.etcd_cidr}"
+  source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
@@ -91,7 +91,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_ssh_from_master" {
   destination_port_range = "22"
 
   # TODO: Need to allow traffic from master
-  source_address_prefix       = "${var.master_cidr}"
+  source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
@@ -107,7 +107,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_self" {
   destination_port_range = "2379"
 
   # TODO: Need to allow traffic from self
-  source_address_prefix       = "${var.etcd_cidr}"
+  source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
@@ -123,7 +123,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_master" {
   destination_port_range = "2379"
 
   # TODO: Need to allow traffic from master
-  source_address_prefix       = "${var.master_cidr}"
+  source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
@@ -139,7 +139,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_client_worker" {
   destination_port_range = "2379"
 
   # TODO: Need to allow traffic from workers
-  source_address_prefix       = "${var.worker_cidr}"
+  source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
@@ -155,7 +155,7 @@ resource "azurerm_network_security_rule" "etcd_ingress_peer" {
   destination_port_range = "2380"
 
   # TODO: Need to allow traffic from self
-  source_address_prefix       = "${var.etcd_cidr}"
+  source_address_prefix       = "${var.vnet_cidr_block}"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${var.external_etcd_nsg_name}"
