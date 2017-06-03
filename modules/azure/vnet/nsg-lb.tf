@@ -14,7 +14,7 @@ resource "azurerm_network_security_rule" "api_egress" {
   destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.nsg_rsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${azurerm_network_security_group.api.name}"
 
   #depends_on                  = ["azurerm_network_security_group.api"]
@@ -30,7 +30,7 @@ resource "azurerm_network_security_rule" "api_ingress_https" {
   destination_port_range      = "443"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.nsg_rsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${azurerm_network_security_group.api.name}"
 
   #depends_on                  = ["azurerm_network_security_group.api"]
@@ -39,7 +39,7 @@ resource "azurerm_network_security_rule" "api_ingress_https" {
 resource "azurerm_network_security_group" "console" {
   name                = "${var.tectonic_cluster_name}-console-nsg"
   location            = "${var.location}"
-  resource_group_name = "${var.nsg_rsg_name}"
+  resource_group_name = "${var.external_nsg_rsg_name}"
 
   #depends_on          = ["azurerm_resource_group.tectonic_cluster"]
 }
@@ -54,7 +54,7 @@ resource "azurerm_network_security_rule" "console_egress" {
   destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.nsg_rsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${azurerm_network_security_group.console.name}"
 
   #depends_on                  = ["azurerm_network_security_group.console"]
@@ -70,7 +70,7 @@ resource "azurerm_network_security_rule" "console_ingress_https" {
   destination_port_range      = "443"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.nsg_rsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${azurerm_network_security_group.console.name}"
 
   #depends_on                  = ["azurerm_network_security_group.console"]
@@ -86,7 +86,7 @@ resource "azurerm_network_security_rule" "console_ingress_http" {
   destination_port_range      = "80"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "${var.nsg_rsg_name}"
+  resource_group_name         = "${var.external_nsg_rsg_name}"
   network_security_group_name = "${azurerm_network_security_group.console.name}"
 
   #depends_on                  = ["azurerm_network_security_group.console"]
