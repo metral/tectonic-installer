@@ -10,4 +10,4 @@ tectonic-license.txt
 terraform.tfstate*
 terraform.tfvars
 build/
-modules/azure/vnet/nsg-etcd.tf
+modules/azure/vnet/nsg-lb.tf
