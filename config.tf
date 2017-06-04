@@ -170,7 +170,7 @@ EOF
 
 variable "tectonic_cluster_prefix" {
   type        = "string"
-  description = ""
+  description = "(optional) Defines a prefix for cluster names."
   default     = ""
 }
 

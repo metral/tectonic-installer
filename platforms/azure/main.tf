@@ -43,7 +43,8 @@ module "etcd" {
 
   etcd_count      = "${var.tectonic_etcd_count}"
   base_domain     = "${var.tectonic_base_domain}"
-  cluster_name    = "${module.tectonic.name}"
+  cluster_prefix = "${module.tectonic.prefix}"
+  cluster_name = "${module.tectonic.name}"
   public_ssh_key  = "${var.tectonic_azure_ssh_key}"
   virtual_network = "${module.vnet.vnet_id}"
   subnet          = "${module.vnet.master_subnet}"
@@ -59,7 +60,8 @@ module "masters" {
 
   master_count                 = "${var.tectonic_master_count}"
   base_domain                  = "${var.tectonic_base_domain}"
-  cluster_name                 = "${module.tectonic.name}"
+  cluster_prefix = "${module.tectonic.prefix}"
+  cluster_name = "${module.tectonic.name}"
   public_ssh_key               = "${var.tectonic_azure_ssh_key}"
   virtual_network              = "${module.vnet.vnet_id}"
   subnet                       = "${module.vnet.master_subnet}"
@@ -87,7 +89,8 @@ module "workers" {
 
   worker_count                 = "${var.tectonic_worker_count}"
   base_domain                  = "${var.tectonic_base_domain}"
-  cluster_name                 = "${module.tectonic.name}"
+  cluster_prefix = "${module.tectonic.prefix}"
+  cluster_name = "${module.tectonic.name}"
   public_ssh_key               = "${var.tectonic_azure_ssh_key}"
   virtual_network              = "${module.vnet.vnet_id}"
   subnet                       = "${module.vnet.worker_subnet}"

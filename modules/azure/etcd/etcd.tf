@@ -49,7 +49,7 @@ resource "random_id" "storage" {
 }
 
 resource "azurerm_storage_account" "etcd_storage" {
-  name                = "${var.tectonic_cluster_prefix}${random_id.storage.hex}etcd"
+  name                = "${var.cluster_prefix}${random_id.storage.hex}etcd"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "Premium_LRS"

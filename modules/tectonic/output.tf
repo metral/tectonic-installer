@@ -19,6 +19,10 @@ output "name" {
   value = "${var.cluster_prefix != "" ? "${var.cluster_prefix}-${var.cluster_name}" : var.cluster_name}"
 }
 
+output "prefix" {
+  value = "${var.cluster_prefix}"
+}
+
 output "id" {
   value = "${sha1("${template_dir.tectonic.id} ${local_file.tectonic.id}")}"
 }
