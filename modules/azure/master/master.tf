@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "tectonic_master" {
 }
 
 resource "azurerm_storage_container" "tectonic_master" {
-  name                  = "${var.tectonic_cluster_prefix}-master"
+  name                  = "${var.cluster_name}-master"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.tectonic_master.name}"
   container_access_type = "private"
