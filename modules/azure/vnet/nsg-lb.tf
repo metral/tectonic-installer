@@ -8,7 +8,7 @@ resource "azurerm_network_security_group" "api" {
 resource "azurerm_network_security_rule" "api_egress" {
   count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-api_egress"
-  priority                    = 100
+  priority                    = 1990
   direction                   = "Outbound"
   access                      = "Allow"
   protocol                    = "*"
@@ -23,7 +23,7 @@ resource "azurerm_network_security_rule" "api_egress" {
 resource "azurerm_network_security_rule" "api_ingress_https" {
   count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-api_ingress_https"
-  priority                    = 200
+  priority                    = 300
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "tcp"
@@ -45,7 +45,7 @@ resource "azurerm_network_security_group" "console" {
 resource "azurerm_network_security_rule" "console_egress" {
   count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-console_egress"
-  priority                    = 100
+  priority                    = 1995
   direction                   = "Outbound"
   access                      = "Allow"
   protocol                    = "*"
@@ -60,7 +60,7 @@ resource "azurerm_network_security_rule" "console_egress" {
 resource "azurerm_network_security_rule" "console_ingress_https" {
   count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-console_ingress_https"
-  priority                    = 200
+  priority                    = 350
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "tcp"
@@ -75,7 +75,7 @@ resource "azurerm_network_security_rule" "console_ingress_https" {
 resource "azurerm_network_security_rule" "console_ingress_http" {
   count                       = "${var.create_api_nsg_rules ? 1 : 0}"
   name                        = "${var.tectonic_cluster_name}-console_ingress_http"
-  priority                    = 300
+  priority                    = 355
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "tcp"
