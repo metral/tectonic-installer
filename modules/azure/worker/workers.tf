@@ -7,7 +7,7 @@ resource "random_id" "tectonic_storage_name" {
 }
 
 resource "azurerm_storage_account" "tectonic_worker" {
-  name                = "${random_id.tectonic_storage_name.hex}"
+  name                = "${var.tectonic_cluster_prefix}${random_id.tectonic_storage_name.hex}wrk"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "Premium_LRS"
@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "tectonic_worker" {
 }
 
 resource "azurerm_storage_container" "tectonic_worker" {
-  name                  = "vhd"
+  name                  = "${var.tectonic_cluster_prefix}-worker"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.tectonic_worker.name}"
   container_access_type = "private"

@@ -169,9 +169,9 @@ EOF
 }
 
 variable "tectonic_cluster_prefix" {
-  type = "string"
+  type        = "string"
   description = ""
-  default = ""
+  default     = ""
 }
 
 variable "tectonic_cluster_name" {

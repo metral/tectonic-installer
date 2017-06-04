@@ -9,11 +9,11 @@ module "resource_group" {
 module "vnet" {
   source = "../../modules/azure/vnet"
 
-  location                  = "${var.tectonic_azure_location}"
-  resource_group_name       = "${module.resource_group.name}"
-  tectonic_cluster_name     = "${module.tectonic.name}"
-  vnet_cidr_block           = "${var.tectonic_azure_vnet_cidr_block}"
-  #etcd_lb_ip                = "${module.etcd.lb_ip}"
+  location              = "${var.tectonic_azure_location}"
+  resource_group_name   = "${module.resource_group.name}"
+  tectonic_cluster_name = "${module.tectonic.name}"
+  vnet_cidr_block       = "${var.tectonic_azure_vnet_cidr_block}"
+
   etcd_cidr                 = "${module.vnet.etcd_cidr}"
   master_cidr               = "${module.vnet.master_cidr}"
   worker_cidr               = "${module.vnet.worker_cidr}"

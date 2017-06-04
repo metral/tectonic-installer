@@ -10,7 +10,7 @@ resource "random_id" "tectonic_master_storage_name" {
 }
 
 resource "azurerm_storage_account" "tectonic_master" {
-  name                = "${random_id.tectonic_master_storage_name.hex}"
+  name                = "${var.tectonic_cluster_prefix}${random_id.tectonic_master_storage_name.hex}m"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "Premium_LRS"
@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "tectonic_master" {
 }
 
 resource "azurerm_storage_container" "tectonic_master" {
-  name                  = "${var.cluster_name}-vhd-master"
+  name                  = "${var.tectonic_cluster_prefix}-master"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.tectonic_master.name}"
   container_access_type = "private"
