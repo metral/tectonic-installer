@@ -3,7 +3,7 @@ module "resource_group" {
 
   external_rsg_name       = "${var.tectonic_azure_external_rsg_name}"
   tectonic_azure_location = "${var.tectonic_azure_location}"
-  tectonic_cluster_name   = "${var.tectonic_cluster_name}"
+  tectonic_cluster_name   = "${module.tectonic.name}"
 }
 
 module "vnet" {
@@ -11,10 +11,9 @@ module "vnet" {
 
   location              = "${var.tectonic_azure_location}"
   resource_group_name   = "${module.resource_group.name}"
-  tectonic_cluster_name = "${var.tectonic_cluster_name}"
+  tectonic_cluster_name = "${module.tectonic.name}"
   vnet_cidr_block       = "${var.tectonic_azure_vnet_cidr_block}"
 
-  #etcd_lb_ip                = "${module.etcd.lb_ip}"
   etcd_cidr                 = "${module.vnet.etcd_cidr}"
   master_cidr               = "${module.vnet.master_cidr}"
   worker_cidr               = "${module.vnet.worker_cidr}"
@@ -44,7 +43,8 @@ module "etcd" {
 
   etcd_count      = "${var.tectonic_etcd_count}"
   base_domain     = "${var.tectonic_base_domain}"
-  cluster_name    = "${var.tectonic_cluster_name}"
+  cluster_prefix  = "${module.tectonic.prefix}"
+  cluster_name    = "${module.tectonic.name}"
   public_ssh_key  = "${var.tectonic_azure_ssh_key}"
   virtual_network = "${module.vnet.vnet_id}"
   subnet          = "${module.vnet.master_subnet}"
@@ -60,7 +60,8 @@ module "masters" {
 
   master_count                 = "${var.tectonic_master_count}"
   base_domain                  = "${var.tectonic_base_domain}"
-  cluster_name                 = "${var.tectonic_cluster_name}"
+  cluster_prefix               = "${module.tectonic.prefix}"
+  cluster_name                 = "${module.tectonic.name}"
   public_ssh_key               = "${var.tectonic_azure_ssh_key}"
   virtual_network              = "${module.vnet.vnet_id}"
   subnet                       = "${module.vnet.master_subnet}"
@@ -88,7 +89,8 @@ module "workers" {
 
   worker_count                 = "${var.tectonic_worker_count}"
   base_domain                  = "${var.tectonic_base_domain}"
-  cluster_name                 = "${var.tectonic_cluster_name}"
+  cluster_prefix               = "${module.tectonic.prefix}"
+  cluster_name                 = "${module.tectonic.name}"
   public_ssh_key               = "${var.tectonic_azure_ssh_key}"
   virtual_network              = "${module.vnet.vnet_id}"
   subnet                       = "${module.vnet.worker_subnet}"
@@ -108,7 +110,7 @@ module "dns" {
   etcd_ip_addresses   = "${module.etcd.ip_address}"
 
   base_domain  = "${var.tectonic_base_domain}"
-  cluster_name = "${var.tectonic_cluster_name}"
+  cluster_name = "${module.tectonic.name}"
 
   location            = "${var.tectonic_azure_location}"
   resource_group_name = "${var.tectonic_azure_dns_resource_group}"
