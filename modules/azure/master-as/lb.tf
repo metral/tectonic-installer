@@ -21,11 +21,11 @@ resource "azurerm_lb" "tectonic_lb" {
 data "template_file" "scripts_nsupdate" {
   template = <<EOF
 update delete $${cluster_name}.$${base_domain} A
-update delete $${cluster_name}-k8s.$${base_domain} A
+update delete $${cluster_name}-api.$${base_domain} A
 update delete $${cluster_name}-master.$${base_domain} A
 
 update add $${cluster_name}.$${base_domain} 0 A $${console_ip_address}
-update add $${cluster_name}-k8s.$${base_domain} 0 A $${api_proxy_ip_address}
+update add $${cluster_name}-api.$${base_domain} 0 A $${api_proxy_ip_address}
 update add $${cluster_name}-master.$${base_domain} 0 A $${ip_address}
 
 send
