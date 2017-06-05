@@ -15,9 +15,9 @@ output "ingress_internal_fqdn" {
 }
 
 output "api_external_fqdn" {
-  value = "${var.cluster_name}-k8s.${var.base_domain}"
+  value = "${var.cluster_name}-api.${var.base_domain}"
 }
 
 output "api_internal_fqdn" {
-  value = "${var.cluster_name}-k8s.${var.base_domain}"
+  value = "${var.cluster_name}-api.${var.base_domain}"
 }
