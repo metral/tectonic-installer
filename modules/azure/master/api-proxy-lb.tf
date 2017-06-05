@@ -2,7 +2,7 @@
 ## Related to: https://github.com/Microsoft/azure-docs/blob/master/articles/load-balancer/load-balancer-internal-overview.md#limitations
 
 resource "azurerm_lb" "proxy_lb" {
-  name                = "api-proxy-lb"
+  name                = "${var.cluster_name}-api-proxy-lb"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
 
