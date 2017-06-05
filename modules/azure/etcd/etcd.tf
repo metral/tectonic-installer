@@ -56,7 +56,7 @@ resource "azurerm_storage_account" "etcd_storage" {
 }
 
 resource "azurerm_storage_container" "etcd_storage_container" {
-  name                  = "${var.cluster_name}-etcd"
+  name                  = "${var.cluster_name}-etcd-vhd"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.etcd_storage.name}"
   container_access_type = "private"

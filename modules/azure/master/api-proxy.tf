@@ -34,7 +34,7 @@ resource "azurerm_storage_account" "proxy" {
 }
 
 resource "azurerm_storage_container" "proxy" {
-  name                  = "${var.cluster_name}-proxy"
+  name                  = "${var.cluster_name}-proxy-vhd"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.proxy.name}"
   container_access_type = "private"
