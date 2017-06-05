@@ -7,7 +7,7 @@ resource "random_id" "tectonic_storage_name" {
 }
 
 resource "azurerm_storage_account" "tectonic_worker" {
-  name                = "${random_id.tectonic_storage_name.hex}"
+  name                = "${var.cluster_prefix}${random_id.tectonic_storage_name.hex}wrk"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "${var.storage_account_type}"
@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "tectonic_worker" {
 }
 
 resource "azurerm_storage_container" "tectonic_worker" {
-  name                  = "vhd"
+  name                  = "${var.cluster_name}-worker-vhd"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.tectonic_worker.name}"
   container_access_type = "private"
@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine_scale_set" "tectonic_workers" {
   }
 
   os_profile {
-    computer_name_prefix = "tectonic-worker-"
+    computer_name_prefix = "${var.cluster_name}-worker-"
     admin_username       = "core"
     admin_password       = ""
     custom_data          = "${base64encode("${data.ignition_config.worker.rendered}")}"
