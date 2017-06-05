@@ -23,7 +23,7 @@ variable proxy_storage_profile_image_reference {
 }
 
 resource "azurerm_storage_account" "proxy" {
-  name                = "${random_id.tectonic_master_storage_name.hex}proxy"
+  name                = "${var.cluster_prefix}${random_id.tectonic_master_storage_name.hex}proxy"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "Standard_LRS"
@@ -34,7 +34,7 @@ resource "azurerm_storage_account" "proxy" {
 }
 
 resource "azurerm_storage_container" "proxy" {
-  name                  = "${var.cluster_name}-proxy"
+  name                  = "${var.cluster_name}-proxy-vhd"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.proxy.name}"
   container_access_type = "private"
@@ -129,7 +129,7 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
   }
 
   os_profile {
-    computer_name_prefix = "tectonic-proxy-"
+    computer_name_prefix = "${var.cluster_name}-proxy-"
     admin_username       = "core"
     admin_password       = ""
   }
