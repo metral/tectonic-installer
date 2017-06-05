@@ -169,14 +169,16 @@ EOF
 }
 
 variable "tectonic_cluster_prefix" {
-  type        = "string"
+  type = "string"
+
   description = <<EOF
 (optional) Defines a prefix for cluster names
 
 WARNING: This prefix should be a short, strictly alphanumeric value.
 Special characters will cause errors due to certain resource name constraints.
 EOF
-  default     = ""
+
+  default = ""
 }
 
 variable "tectonic_cluster_name" {
