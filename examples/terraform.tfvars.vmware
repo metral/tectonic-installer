@@ -46,6 +46,12 @@ tectonic_cluster_cidr = "10.2.0.0/16"
 // Warning: Special characters in the name like '.' may cause errors on OpenStack platforms due to resource name constraints.
 tectonic_cluster_name = ""
 
+// (optional) Defines a prefix for cluster names
+// 
+// WARNING: This prefix should be a short, strictly alphanumeric value.
+// Special characters will cause errors due to certain resource name constraints.
+// tectonic_cluster_prefix = ""
+
 // (optional) The path of the file containing the CA certificate for TLS communication with etcd.
 // 
 // Note: This works only when used in conjunction with an external etcd cluster.
