@@ -73,7 +73,7 @@ resource "azurerm_network_security_rule" "cdx_console_egress" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_resource_group == "" ? var.resource_group_name : var.external_resource_group}"
-  network_security_group_name = "${var.external_nsg_console}"
+  network_security_group_name = "${var.external_nsg_api}"
 }
 
 resource "azurerm_network_security_rule" "cdx_console_ingress_https" {
@@ -88,7 +88,7 @@ resource "azurerm_network_security_rule" "cdx_console_ingress_https" {
   source_address_prefix       = "VirtualNetwork"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_resource_group == "" ? var.resource_group_name : var.external_resource_group}"
-  network_security_group_name = "${var.external_nsg_console}"
+  network_security_group_name = "${var.external_nsg_api}"
 }
 
 resource "azurerm_network_security_rule" "cdx_console_ingress_http" {
@@ -103,7 +103,7 @@ resource "azurerm_network_security_rule" "cdx_console_ingress_http" {
   source_address_prefix       = "VirtualNetwork"
   destination_address_prefix  = "*"
   resource_group_name         = "${var.external_resource_group == "" ? var.resource_group_name : var.external_resource_group}"
-  network_security_group_name = "${var.external_nsg_console}"
+  network_security_group_name = "${var.external_nsg_api}"
 }
 
 ########
