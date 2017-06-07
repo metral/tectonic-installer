@@ -101,14 +101,17 @@ kubectl create -f node-dns/namespace.yaml
 kubectl create -f node-dns/configmap.yaml
 kubectl create -f node-dns/daemonset.yaml
 wait_for_pods node-dns
+sleep 20
 
 echo "Performing Rolling Update on APIServer to flush DNS cache for Node DNS"
 kubectl patch ds/kube-apiserver -n kube-system --patch "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
 wait_for_rolling_update kube-system
+sleep 20
 
 echo "Performing Rolling Update on kube-dns to flush DNS cache for Node DNS"
 kubectl patch deploy/kube-dns -n kube-system --patch "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
 wait_for_rolling_update kube-system
+sleep 20
 
 echo "Creating Tectonic Namespace"
 kubectl create -f namespace.yaml
