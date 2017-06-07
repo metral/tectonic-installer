@@ -67,6 +67,19 @@ function wait_for_pods() {
   set -e
 }
 
+function wait_for_rolling_update() {
+  set +e
+  local i=0
+  echo "Waiting for rolling update in namespace $1"
+  while $KUBECTL -n "$1" get po | grep -v STATUS | awk '{print $3}' | grep -v '^Running'; do
+    (( i++ ))
+    echo "Rolling update not complete yet, waiting for 5 seconds ($i)"
+    sleep 5
+  done
+  echo "Rolling update completed."
+  set -e
+}
+
 # chdir into the assets path directory
 cd "$ASSETS_PATH/tectonic"
 
@@ -93,7 +106,11 @@ wait_for_pods node-dns
 
 echo "Performing Rolling Update on APIServer to flush DNS cache for Node DNS"
 kubectl patch ds/kube-apiserver -n kube-system --patch "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-wait_for_pods kube-system
+wait_for_rolling_update kube-system
+
+echo "Performing Rolling Update on kube-dns to flush DNS cache for Node DNS"
+kubectl patch deploy/kube-dns -n kube-system --patch "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+wait_for_rolling_update kube-system
 
 echo "Creating Tectonic Namespace"
 kubectl create -f namespace.yaml
