@@ -63,8 +63,10 @@ sudo yum update --exclude=WALinuxAgent* -y
 sudo yum install -y nginx
 
 sudo bash -c 'cat > nginx.conf << "NGINXCONF"
+worker_processes auto;
+
 events {
-    worker_connections   2000;
+    worker_connections   10000;
 }
 
 stream {
