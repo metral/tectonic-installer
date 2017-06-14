@@ -96,3 +96,11 @@ variable "external_nsg_worker" {
 variable "create_nsg_rules" {
   default = true
 }
+
+variable "subnet" {
+  type = "string"
+}
+
+variable "base_domain" {
+  type = "string"
+}
