@@ -23,6 +23,7 @@ module "vnet" {
   external_worker_subnet_id = "${var.tectonic_azure_external_worker_subnet_id}"
   ssh_network_internal      = "${var.tectonic_azure_ssh_network_internal}"
   ssh_network_external      = "${var.tectonic_azure_ssh_network_external}"
+  subnet                    = "${module.vnet.master_subnet}"
   external_resource_group   = "${var.tectonic_azure_external_resource_group}"
   external_nsg_etcd         = "${var.tectonic_azure_external_nsg_etcd}"
   external_nsg_api          = "${var.tectonic_azure_external_nsg_api}"
@@ -48,7 +49,7 @@ module "etcd" {
   subnet                = "${module.vnet.master_subnet}"
   endpoints             = "${module.vnet.etcd_private_ips}"
   network_interface_ids = "${module.vnet.etcd_network_interface_ids}"
-  cluster_prefix  = "${module.tectonic.prefix}"
+  cluster_prefix        = "${module.tectonic.prefix}"
 }
 
 module "masters" {
