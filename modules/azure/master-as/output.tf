@@ -21,3 +21,7 @@ output "api_external_fqdn" {
 output "api_internal_fqdn" {
   value = "${var.cluster_name}-api.${var.base_domain}"
 }
+
+output "private_ip_addresses" {
+  value = ["${azurerm_network_interface.tectonic_master.*.private_ip_address}"]
+}
