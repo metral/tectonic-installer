@@ -2,7 +2,6 @@ resource "azurerm_network_interface" "etcd_nic" {
   count                     = "${var.etcd_count}"
   name                      = "${var.tectonic_cluster_name}-etcd-nic-${count.index}"
   location                  = "${var.location}"
-  network_security_group_id = "${azurerm_network_security_group.etcd_group.id}"
   resource_group_name       = "${var.resource_group_name}"
 
   ip_configuration {
