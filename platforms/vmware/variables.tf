@@ -42,7 +42,8 @@ variable "tectonic_vmware_cluster" {
 
 variable "tectonic_vmware_resource_pool" {
   type        = "string"
-  description = "The name of a Resource Pool in which to launch the virtual machine. Requires full path"
+  description = "(optional) The name of a Resource Pool in which to launch the virtual machine. Requires full path"
+  default     = ""
 }
 
 // # Global
@@ -93,7 +94,7 @@ variable "tectonic_vmware_etcd_hostnames" {
   type = "map"
 
   description = <<EOF
-  Terraform map of etcd node(s) Hostnames, Example: 
+  Terraform map of etcd node(s) Hostnames, Example:
   tectonic_vmware_etcd_hostnames = {
   "0" = "mycluster-etcd-0"
   "1" = "mycluster-etcd-1"
@@ -106,7 +107,7 @@ variable "tectonic_vmware_etcd_ip" {
   type = "map"
 
   description = <<EOF
-  Terraform map of etcd node(s) IP Addresses, Example: 
+  Terraform map of etcd node(s) IP Addresses, Example:
   tectonic_vmware_etcd_ip = {
   "0" = "192.168.246.10/24"
   "1" = "192.168.246.11/24"
@@ -144,7 +145,7 @@ variable "tectonic_vmware_master_hostnames" {
   type = "map"
 
   description = <<EOF
-  Terraform map of Master node(s) Hostnames, Example: 
+  Terraform map of Master node(s) Hostnames, Example:
   tectonic_vmware_master_hostnames = {
   "0" = "mycluster-master-0"
   "1" = "mycluster-master-1"
