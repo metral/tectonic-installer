@@ -15,6 +15,7 @@ module "vnet" {
   vnet_cidr_block       = "${var.tectonic_azure_vnet_cidr_block}"
 
   etcd_count                = "${var.tectonic_etcd_count}"
+  base_domain               = "${var.tectonic_base_domain}"
   etcd_cidr                 = "${module.vnet.etcd_cidr}"
   master_cidr               = "${module.vnet.master_cidr}"
   worker_cidr               = "${module.vnet.worker_cidr}"
