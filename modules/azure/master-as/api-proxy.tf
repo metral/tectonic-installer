@@ -71,7 +71,7 @@ stream {
     resolver 10.255.0.27;
 
     map $protocol $pro {
-        default '$${api_internal_ip_address}:443';
+        default '$${console_internal_ip_address}:443';
     }
 
     server {
@@ -95,13 +95,13 @@ sudo systemctl start nginx
 EOF
 
   vars {
-    api_internal_ip_address = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
+    console_internal_ip_address = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.1.private_ip_address}"
   }
 }
 
 resource "local_file" "scripts_proxy_bootstrap" {
   content  = "${data.template_file.scripts_proxy_bootstrap.rendered}"
-  filename = "${path.cwd}/generated/proxy/api-proxy-bootstrap.sh"
+  filename = "${path.cwd}/generated/proxy/console-proxy-bootstrap.sh"
 }
 
 resource "null_resource" "scripts_proxy_bootstrap" {
@@ -112,12 +112,12 @@ resource "null_resource" "scripts_proxy_bootstrap" {
   }
 
   provisioner "local-exec" {
-    command = "az storage blob upload --container-name ${azurerm_storage_container.proxy.name} --file ${path.cwd}/generated/proxy/api-proxy-bootstrap.sh --name api-proxy-bootstrap.sh --account-name ${azurerm_storage_account.proxy.name} --account-key ${azurerm_storage_account.proxy.primary_access_key}"
+    command = "az storage blob upload --container-name ${azurerm_storage_container.proxy.name} --file ${path.cwd}/generated/proxy/console-proxy-bootstrap.sh --name console-proxy-bootstrap.sh --account-name ${azurerm_storage_account.proxy.name} --account-key ${azurerm_storage_account.proxy.primary_access_key}"
   }
 }
 
-resource "azurerm_virtual_machine_scale_set" "api-proxy" {
-  name                = "${var.cluster_name}-api-proxy"
+resource "azurerm_virtual_machine_scale_set" "console-proxy" {
+  name                = "${var.cluster_name}-console-proxy"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
   upgrade_policy_mode = "Automatic"
@@ -150,7 +150,7 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
     ip_configuration {
       name                                   = "${var.cluster_name}-ProxyIPConfiguration"
       subnet_id                              = "${var.subnet}"
-      load_balancer_backend_address_pool_ids = ["${azurerm_lb_backend_address_pool.api-proxy-lb.id}"]
+      load_balancer_backend_address_pool_ids = ["${azurerm_lb_backend_address_pool.console-proxy-lb.id}"]
     }
   }
 
@@ -170,7 +170,7 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
   }
 
   extension {
-    name                       = "${var.cluster_name}-api-proxy"
+    name                       = "${var.cluster_name}-console-proxy"
     publisher                  = "Microsoft.Azure.Extensions"
     type                       = "CustomScript"
     type_handler_version       = "2.0"
@@ -179,9 +179,9 @@ resource "azurerm_virtual_machine_scale_set" "api-proxy" {
     settings = <<SETTINGS
         {
           "fileUris": [
-            "${azurerm_storage_account.proxy.primary_blob_endpoint}${azurerm_storage_container.proxy.name}/api-proxy-bootstrap.sh"
+            "${azurerm_storage_account.proxy.primary_blob_endpoint}${azurerm_storage_container.proxy.name}/console-proxy-bootstrap.sh"
           ],
-          "commandToExecute": "sudo bash api-proxy-bootstrap.sh",
+          "commandToExecute": "sudo bash console-proxy-bootstrap.sh",
           "timestamp": ${substr(null_resource.scripts_proxy_bootstrap.id, 0, 9)}
         }
 SETTINGS
