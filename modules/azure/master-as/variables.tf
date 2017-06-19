@@ -102,3 +102,7 @@ variable "tectonic_service_disabled" {
 variable "use_custom_fqdn" {
   default = false
 }
+
+variable "role" {
+  type = "string"
+}

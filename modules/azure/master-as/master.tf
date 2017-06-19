@@ -49,7 +49,7 @@ resource "azurerm_network_interface" "tectonic_master" {
 
 resource "azurerm_virtual_machine" "tectonic_master" {
   count                 = "${var.master_count}"
-  name                  = "${format("%s-master-%03d", var.cluster_name, count.index + 1)}"
+  name                  = "${format("%s-%s-%03d", var.cluster_name, var.role, count.index + 1)}"
   location              = "${var.location}"
   resource_group_name   = "${var.resource_group_name}"
   network_interface_ids = ["${element(azurerm_network_interface.tectonic_master.*.id, count.index)}"]
@@ -72,7 +72,7 @@ resource "azurerm_virtual_machine" "tectonic_master" {
   }
 
   os_profile {
-    computer_name  = "${format("%s-master-%03d", var.cluster_name, count.index + 1)}"
+    computer_name  = "${format("%s-%s-%03d", var.cluster_name, var.role, count.index + 1)}"
     admin_username = "core"
     admin_password = ""
 
