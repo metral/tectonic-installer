@@ -4,7 +4,7 @@ resource "random_id" "tectonic_storage_name" {
 }
 
 resource "azurerm_storage_account" "tectonic_worker" {
-  name                = "${random_id.tectonic_storage_name.hex}"
+  name                = "${var.cluster_prefix}${random_id.tectonic_storage_name.hex}wrk"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "${var.storage_account_type}"
@@ -50,7 +50,7 @@ resource "azurerm_network_interface" "tectonic_worker" {
 
 resource "azurerm_virtual_machine" "tectonic_worker" {
   count                 = "${var.worker_count}"
-  name                  = "${var.cluster_name}-worker${count.index}"
+  name                  = "${format("%s-worker-%03d", var.cluster_name, count.index + 1)}"
   location              = "${var.location}"
   resource_group_name   = "${var.resource_group_name}"
   network_interface_ids = ["${element(azurerm_network_interface.tectonic_worker.*.id, count.index)}"]
@@ -73,7 +73,7 @@ resource "azurerm_virtual_machine" "tectonic_worker" {
   }
 
   os_profile {
-    computer_name  = "${var.cluster_name}-worker${count.index}"
+    computer_name  = "${format("%s-worker-%03d", var.cluster_name, count.index + 1)}"
     admin_username = "core"
     admin_password = ""
     custom_data    = "${base64encode("${data.ignition_config.worker.rendered}")}"
