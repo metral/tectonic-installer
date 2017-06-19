@@ -51,6 +51,7 @@ module "etcd" {
   endpoints             = "${module.vnet.etcd_private_ips}"
   network_interface_ids = "${module.vnet.etcd_network_interface_ids}"
   cluster_prefix        = "${module.tectonic.prefix}"
+  role                  = "etcd"
 }
 
 module "masters" {
@@ -81,6 +82,7 @@ module "masters" {
   tectonic_service_disabled    = "${var.tectonic_vanilla_k8s}"
 
   use_custom_fqdn = "${var.tectonic_azure_use_custom_fqdn}"
+  role            = "master"
 }
 
 module "workers" {
@@ -105,6 +107,7 @@ module "workers" {
   tectonic_kube_dns_service_ip = "${module.bootkube.kube_dns_service_ip}"
   cloud_provider               = ""
   kubelet_node_label           = "node-role.kubernetes.io/node"
+  role                         = "worker"
 }
 
 module "dns" {
