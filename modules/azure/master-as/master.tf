@@ -6,7 +6,7 @@
 
 # Generate unique storage name
 resource "random_id" "tectonic_master_storage_name" {
-  byte_length = 4
+  byte_length = 2
 }
 
 resource "azurerm_storage_account" "tectonic_master" {
