@@ -45,7 +45,7 @@ resource "azurerm_virtual_machine" "etcd_node" {
 }
 
 resource "random_id" "storage" {
-  byte_length = 4
+  byte_length = 2
 }
 
 resource "azurerm_storage_account" "etcd_storage" {
