@@ -25,13 +25,12 @@ EOF
 
   vars {
     nsupdate_path = "${path.cwd}/generated/dns/k8s-dns.txt"
-    cluster_name = "${var.cluster_name}"
-    base_domain  = "${var.base_domain}"
+    cluster_name  = "${var.cluster_name}"
+    base_domain   = "${var.base_domain}"
 
-    ip_address           = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
-    private_ip_addresses = "${join(" ", azurerm_network_interface.tectonic_master.*.private_ip_address)}"
+    ip_address               = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
+    private_ip_addresses     = "${join(" ", azurerm_network_interface.tectonic_master.*.private_ip_address)}"
     console_proxy_ip_address = "${azurerm_lb.proxy_lb.frontend_ip_configuration.0.private_ip_address}"
-
   }
 }
 
