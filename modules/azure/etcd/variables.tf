@@ -62,3 +62,7 @@ variable "network_interface_ids" {
 variable "endpoints" {
   type = "list"
 }
+
+variable "role" {
+  type = "string"
+}
