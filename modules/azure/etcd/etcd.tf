@@ -6,7 +6,7 @@ resource "azurerm_availability_set" "etcd" {
 
 resource "azurerm_virtual_machine" "etcd_node" {
   count                 = "${var.etcd_count}"
-  name                  = "${var.cluster_name}-etcd-${count.index}"
+  name                  = "${format("%s-etcd-%03d", var.cluster_name, count.index + 1)}"
   resource_group_name   = "${var.resource_group_name}"
   network_interface_ids = ["${var.network_interface_ids[count.index]}"]
   vm_size               = "${var.vm_size}"
@@ -28,7 +28,7 @@ resource "azurerm_virtual_machine" "etcd_node" {
   }
 
   os_profile {
-    computer_name  = "etcd"
+    computer_name  = "${format("%s-etcd-%03d", var.cluster_name, count.index + 1)}"
     admin_username = "core"
     admin_password = ""
     custom_data    = "${base64encode("${data.ignition_config.etcd.*.rendered[count.index]}")}"
