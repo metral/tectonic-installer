@@ -72,15 +72,23 @@ events {
 stream {
     resolver 10.255.0.27;
 
-    map $protocol $pro {
+    map $protocol $pro_http {
+        default '$${console_internal_ip_address}:80';
+    }
+
+    map $protocol $pro_https {
         default '$${console_internal_ip_address}:443';
     }
 
     server {
-        listen 443;
-        proxy_pass $pro;
+        listen 80;
+        proxy_pass $pro_http;
     }
 
+    server {
+        listen 443;
+        proxy_pass $pro_https;
+    }
 }
 NGINXCONF'
 
@@ -88,6 +96,7 @@ sudo rm -f /etc/nginx/nginx.conf
 sudo cp nginx.conf /etc/nginx/nginx.conf
 
 sudo firewall-cmd --zone=public --add-port=443/tcp
+sudo firewall-cmd --zone=public --add-port=80/tcp
 setsebool -P httpd_can_network_connect 1
 
 rm -f /var/run/nginx.pid
