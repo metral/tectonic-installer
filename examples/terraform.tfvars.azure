@@ -21,6 +21,11 @@ tectonic_azure_create_nsg_rules = true
 // 
 tectonic_azure_dns_resource_group = "tectonic-dns-group"
 
+// (optional) The IP address of the external DNS server to use. This is configured
+// as the resolver for the proxy used in front of the Tectonic Console, and it is also used
+// during the DNS registration of each individual node in the cluster at creation.
+// tectonic_azure_dns_server = ""
+
 // Storage account type for the etcd node(s). Example: Premium_LRS.
 tectonic_azure_etcd_storage_account_type = "Premium_LRS"
 
