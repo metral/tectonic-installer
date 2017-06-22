@@ -225,3 +225,15 @@ EOF
 
   default = true
 }
+
+variable "tectonic_azure_dns_server" {
+  type = "string"
+
+  description = <<EOF
+(optional) The IP address of the external DNS server to use. This is configured
+as the resolver for the proxy used in front of the Tectonic Console, and it is also used
+during the DNS registration of each individual node in the cluster at creation.
+EOF
+
+  default = ""
+}
