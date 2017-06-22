@@ -20,8 +20,9 @@ data "ignition_user" "core" {
 }
 
 data "ignition_systemd_unit" "locksmithd" {
-  name   = "locksmithd.service"
+  name = "locksmithd.service"
   mask = true
+
   #enable = true
 
   #dropin = [

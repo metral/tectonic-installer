@@ -25,7 +25,7 @@ resource "tls_private_key" "ingress" {
 }
 
 resource "tls_cert_request" "ingress" {
-  count     = "${var.existing_certs["ingress_key_path"] == "/dev/null" ? 1 : 0 }"
+  count           = "${var.existing_certs["ingress_key_path"] == "/dev/null" ? 1 : 0 }"
   key_algorithm   = "${tls_private_key.ingress.algorithm}"
   private_key_pem = "${tls_private_key.ingress.private_key_pem}"
 
@@ -41,7 +41,7 @@ resource "tls_cert_request" "ingress" {
 }
 
 resource "tls_locally_signed_cert" "ingress" {
-  count     = "${var.existing_certs["ingress_key_path"] == "/dev/null" ? 1 : 0 }"
+  count            = "${var.existing_certs["ingress_key_path"] == "/dev/null" ? 1 : 0 }"
   cert_request_pem = "${tls_cert_request.ingress.cert_request_pem}"
 
   ca_key_algorithm   = "${var.existing_certs["ca_key_path"] == "/dev/null" ? var.ca_key_alg : var.existing_certs["ca_key_alg"]}"
