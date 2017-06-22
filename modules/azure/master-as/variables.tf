@@ -106,3 +106,7 @@ variable "use_custom_fqdn" {
 variable "role" {
   type = "string"
 }
+
+variable "dns_server" {
+  type = "string"
+}

@@ -70,7 +70,7 @@ events {
 }
 
 stream {
-    resolver 10.255.0.27;
+    resolver $${dns_server};
 
     map $protocol $pro_http {
         default '$${console_internal_ip_address}:80';
@@ -107,6 +107,7 @@ EOF
 
   vars {
     console_internal_ip_address = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.1.private_ip_address}"
+    dns_server                  = "${var.dns_server}"
   }
 }
 
