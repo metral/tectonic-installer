@@ -81,6 +81,7 @@ module "masters" {
   bootkube_service             = "${module.bootkube.systemd_service}"
   tectonic_service             = "${module.tectonic.systemd_service}"
   tectonic_service_disabled    = "${var.tectonic_vanilla_k8s}"
+  dns_server                   = "${var.tectonic_azure_dns_server}"
 
   use_custom_fqdn = "${var.tectonic_azure_use_custom_fqdn}"
   role            = "master"
