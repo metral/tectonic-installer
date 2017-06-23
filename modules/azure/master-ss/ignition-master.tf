@@ -7,6 +7,7 @@ data "ignition_config" "master" {
 
   systemd = [
     "${data.ignition_systemd_unit.docker.id}",
+    "${data.ignition_systemd_unit.update-engine.id}",
     "${data.ignition_systemd_unit.locksmithd.id}",
     "${data.ignition_systemd_unit.kubelet-master.id}",
     "${data.ignition_systemd_unit.tectonic.id}",
@@ -36,6 +37,11 @@ data "ignition_systemd_unit" "docker" {
       content = "[Service]\nEnvironment=\"DOCKER_OPTS=--log-opt max-size=50m --log-opt max-file=3\"\n"
     },
   ]
+}
+
+data "ignition_systemd_unit" "update-engine" {
+  name = "update-engine.service"
+  mask = true
 }
 
 data "ignition_systemd_unit" "locksmithd" {
