@@ -17,7 +17,7 @@ resource "azurerm_virtual_machine" "etcd_node" {
     publisher = "CoreOS"
     offer     = "CoreOS"
     sku       = "Stable"
-    version   = "1353.8.0"
+    version   = "latest"
   }
 
   storage_os_disk {
