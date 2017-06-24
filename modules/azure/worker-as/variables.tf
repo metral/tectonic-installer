@@ -84,3 +84,7 @@ variable "kubelet_node_label" {
 variable "role" {
   type = "string"
 }
+
+variable "dns_server" {
+  type = "string"
+}

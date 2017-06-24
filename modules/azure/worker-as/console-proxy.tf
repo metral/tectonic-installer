@@ -11,6 +11,11 @@ variable "proxy_count" {
   default = "1"
 }
 
+# Generate unique storage name
+resource "random_id" "tectonic_worker_storage_name" {
+  byte_length = 2
+}
+
 variable proxy_storage_profile_image_reference {
   type = "map"
 
@@ -23,7 +28,7 @@ variable proxy_storage_profile_image_reference {
 }
 
 resource "azurerm_storage_account" "proxy" {
-  name                = "${var.cluster_name}${random_id.tectonic_master_storage_name.hex}p"
+  name                = "${var.cluster_name}${random_id.tectonic_worker_storage_name.hex}p"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "Standard_LRS"
@@ -117,7 +122,7 @@ resource "local_file" "scripts_proxy_bootstrap" {
 }
 
 resource "null_resource" "scripts_proxy_bootstrap" {
-  depends_on = ["azurerm_storage_account.tectonic_master", "local_file.scripts_proxy_bootstrap"]
+  depends_on = ["azurerm_storage_account.tectonic_worker", "local_file.scripts_proxy_bootstrap"]
 
   triggers {
     md5 = "${md5(data.template_file.scripts_proxy_bootstrap.rendered)}"
@@ -171,7 +176,7 @@ resource "azurerm_virtual_machine_scale_set" "console-proxy" {
     caching        = "ReadWrite"
     create_option  = "FromImage"
     os_type        = "linux"
-    vhd_containers = ["${azurerm_storage_account.tectonic_master.primary_blob_endpoint}${azurerm_storage_container.tectonic_master.name}"]
+    vhd_containers = ["${azurerm_storage_account.tectonic_worker.primary_blob_endpoint}${azurerm_storage_container.tectonic_worker.name}"]
   }
 
   storage_profile_image_reference {

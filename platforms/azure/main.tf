@@ -110,6 +110,7 @@ module "workers" {
   cloud_provider               = ""
   kubelet_node_label           = "node-role.kubernetes.io/node"
   role                         = "worker"
+  dns_server                   = "${var.tectonic_azure_dns_server}"
 }
 
 module "dns" {
