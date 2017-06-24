@@ -60,7 +60,7 @@ resource "azurerm_virtual_machine" "tectonic_master" {
     publisher = "CoreOS"
     offer     = "CoreOS"
     sku       = "Stable"
-    version   = "1353.8.0"
+    version   = "latest"
   }
 
   storage_os_disk {
