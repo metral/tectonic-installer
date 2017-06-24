@@ -5,8 +5,6 @@ data "template_file" "scripts_generate_nsupdate" {
 ips="$${private_ip_addresses}"
 
 nsupdate_cmds=$(cat <<END
-update delete $${cluster_name}.$${base_domain} A
-update add $${cluster_name}.$${base_domain} 0 A $${console_proxy_ip_address}
 update delete $${cluster_name}-master.$${base_domain} A
 update add $${cluster_name}-master.$${base_domain} 0 A $${ip_address}
 update delete $${cluster_name}-api.$${base_domain} A
@@ -30,7 +28,6 @@ EOF
 
     ip_address               = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.0.private_ip_address}"
     private_ip_addresses     = "${join(" ", azurerm_network_interface.tectonic_master.*.private_ip_address)}"
-    console_proxy_ip_address = "${azurerm_lb.proxy_lb.frontend_ip_configuration.0.private_ip_address}"
   }
 }
 
