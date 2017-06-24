@@ -73,11 +73,11 @@ stream {
     resolver $${dns_server};
 
     map $protocol $pro_http {
-        default '$${console_internal_ip_address}:80';
+        default '$${console_lb_ip_address}:80';
     }
 
     map $protocol $pro_https {
-        default '$${console_internal_ip_address}:443';
+        default '$${console_lb_ip_address}:443';
     }
 
     server {
@@ -106,7 +106,7 @@ sudo systemctl start nginx
 EOF
 
   vars {
-    console_internal_ip_address = "${azurerm_lb.tectonic_lb.frontend_ip_configuration.1.private_ip_address}"
+    console_lb_ip_address = "${azurerm_lb.workers_lb.frontend_ip_configuration.0.private_ip_address}"
     dns_server                  = "${var.dns_server}"
   }
 }
