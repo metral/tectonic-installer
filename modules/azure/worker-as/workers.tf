@@ -21,11 +21,11 @@ resource "azurerm_storage_container" "tectonic_worker" {
   container_access_type = "private"
 }
 
-# resource "azurerm_lb_backend_address_pool" "workers" {
-#   name                = "workers-lb-pool"
-#   resource_group_name = "${var.resource_group_name}"
-#   loadbalancer_id     = "${azurerm_lb.tectonic_lb.id}"
-# }
+resource "azurerm_lb_backend_address_pool" "workers" {
+  name                = "workers-lb-pool"
+  resource_group_name = "${var.resource_group_name}"
+  loadbalancer_id     = "${azurerm_lb.workers_lb.id}"
+}
 
 resource "azurerm_availability_set" "tectonic_workers" {
   name                = "${var.cluster_name}-workers"
@@ -44,7 +44,7 @@ resource "azurerm_network_interface" "tectonic_worker" {
     name                          = "${var.cluster_name}-WorkerIPConfiguration"
     subnet_id                     = "${var.subnet}"
 
-    # load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.workers.id}"]
+    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.workers.id}"]
   }
 }
 
