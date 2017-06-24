@@ -20,17 +20,15 @@ data "ignition_user" "core" {
 }
 
 data "ignition_systemd_unit" "locksmithd" {
-  name = "locksmithd.service"
-  mask = true
+  name   = "locksmithd.service"
+  enable = true
 
-  #enable = true
-
-  #dropin = [
-  #  {
-  #    name    = "40-etcd-lock.conf"
-  #    content = "[Service]\nEnvironment=REBOOT_STRATEGY=etcd-lock\n"
-  #  },
-  #]
+  dropin = [
+    {
+      name    = "40-etcd-lock.conf"
+      content = "[Service]\nEnvironment=REBOOT_STRATEGY=etcd-lock\n"
+    },
+  ]
 }
 
 data "ignition_systemd_unit" "etcd3" {
