@@ -60,3 +60,35 @@ resource "azurerm_lb_probe" "console-proxy-lb-http" {
   protocol            = "tcp"
   port                = 80
 }
+
+data "template_file" "scripts_nsupdate" {
+  template = <<EOF
+update delete $${cluster_name}.$${base_domain} A
+update add $${cluster_name}.$${base_domain} 0 A $${console_proxy_lb_ip_address}
+
+send
+EOF
+
+  vars {
+    cluster_name                = "${var.cluster_name}"
+    base_domain                 = "${var.base_domain}"
+    console_proxy_lb_ip_address = "${azurerm_lb.proxy_lb.frontend_ip_configuration.0.private_ip_address}"
+  }
+}
+
+resource "local_file" "nsupdate" {
+  content  = "${data.template_file.scripts_nsupdate.rendered}"
+  filename = "${path.cwd}/generated/dns/console-dns.txt.txt"
+}
+
+resource "null_resource" "scripts_nsupdate" {
+  depends_on = ["local_file.nsupdate"]
+
+  triggers {
+    md5 = "${md5(data.template_file.scripts_nsupdate.rendered)}"
+  }
+
+  provisioner "local-exec" {
+    command = "nsupdate -d ${path.cwd}/generated/dns/console-dns.txt.txt"
+  }
+}

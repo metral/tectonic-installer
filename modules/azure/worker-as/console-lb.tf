@@ -1,0 +1,33 @@
+resource "azurerm_lb_rule" "console-lb-https" {
+  name                    = "console-lb-rule-443-32000"
+  resource_group_name     = "${var.resource_group_name}"
+  loadbalancer_id         = "${azurerm_lb.workers_lb.id}"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.workers.id}"
+  probe_id                = "${azurerm_lb_probe.console-lb.id}"
+
+  protocol                       = "tcp"
+  frontend_port                  = 443
+  backend_port                   = 32000
+  frontend_ip_configuration_name = "console"
+}
+
+resource "azurerm_lb_rule" "console-lb-identity" {
+  name                    = "console-lb-rule-80-32001"
+  resource_group_name     = "${var.resource_group_name}"
+  loadbalancer_id         = "${azurerm_lb.workers_lb.id}"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.workers.id}"
+  probe_id                = "${azurerm_lb_probe.console-lb.id}"
+
+  protocol                       = "tcp"
+  frontend_port                  = 80
+  backend_port                   = 32001
+  frontend_ip_configuration_name = "console"
+}
+
+resource "azurerm_lb_probe" "console-lb" {
+  name                = "console-lb-probe-443-up"
+  loadbalancer_id     = "${azurerm_lb.workers_lb.id}"
+  resource_group_name = "${var.resource_group_name}"
+  protocol            = "tcp"
+  port                = 32000
+}
