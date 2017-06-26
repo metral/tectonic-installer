@@ -54,7 +54,7 @@ resource "azurerm_virtual_machine_scale_set" "tectonic_masters" {
     publisher = "CoreOS"
     offer     = "CoreOS"
     sku       = "Stable"
-    version   = "latest"
+    version   = "1353.8.0"
   }
 
   storage_profile_os_disk {
