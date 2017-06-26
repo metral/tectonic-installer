@@ -100,7 +100,7 @@ wait_for_pods kube-system
 # Creating resources
 echo "Creating Node DNS to Register Nodes in DNS"
 kubectl create -f node-dns/namespace.yaml
-kubectl create -f node-dns/configmap.yaml
+kubectl create -f ../dns/node-dns-configmap.yaml
 kubectl create -f node-dns/daemonset.yaml
 wait_for_pods node-dns
 sleep 20
@@ -226,7 +226,7 @@ echo "Creating Tectonic Updater"
 fi
 
 echo "Creating Container Linux Updater"
-#kubectl create -f updater/container-linux-update-operator.yaml
+kubectl create -f updater/container-linux-update-operator.yaml
 
 # wait for Tectonic pods
 wait_for_pods tectonic-system

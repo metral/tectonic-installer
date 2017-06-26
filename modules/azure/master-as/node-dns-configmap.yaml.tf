@@ -1,3 +1,5 @@
+data "template_file" "scripts_generate_node_dns_configmap" {
+  template = <<EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,8 +13,8 @@ data:
     #!/bin/bash
 
     # DNS settings
-    BASE_DOMAIN="cdx.vpc.starbucks.net"
-    NAMESERVER=10.255.0.27
+    BASE_DOMAIN="$${base_domain}"
+    NAMESERVER="$${dns_server}"
 
     # IP addr for the host machine of the Pod
     HOST_IP=`ip -4 a s eth0 | grep inet | awk '{print $2}' | cut -d "/" -f 1`
@@ -21,10 +23,10 @@ data:
     cp /etc/resolv.conf /etc/resolv.conf.`date +%s`
     rm /etc/resolv.conf
 
-    cat > /etc/resolv.conf <<EOF
+    cat > /etc/resolv.conf <<END
     nameserver $NAMESERVER
     search $BASE_DOMAIN
-    EOF
+    END
 
     ## update the DNS records
     cat > /etc/node-dns-records.txt <<-END
@@ -42,3 +44,15 @@ data:
     do
       sleep 1
     done
+EOF
+
+  vars {
+    base_domain = "${var.base_domain}"
+    dns_server  = "${var.dns_server}"
+  }
+}
+
+resource "local_file" "generate_node_dns_configmap" {
+  content  = "${data.template_file.scripts_generate_node_dns_configmap.rendered}"
+  filename = "${path.cwd}/generated/dns/node-dns-configmap.yaml"
+}
