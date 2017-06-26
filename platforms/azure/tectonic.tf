@@ -29,6 +29,16 @@ module "bootkube" {
   etcd_client_cert = "${var.tectonic_etcd_client_cert_path}"
   etcd_client_key  = "${var.tectonic_etcd_client_key_path}"
 
+  etcd_cert_dns_names = [
+    "${var.tectonic_cluster_name}-etcd-0.${var.tectonic_base_domain}",
+    "${var.tectonic_cluster_name}-etcd-1.${var.tectonic_base_domain}",
+    "${var.tectonic_cluster_name}-etcd-2.${var.tectonic_base_domain}",
+    "${var.tectonic_cluster_name}-etcd-3.${var.tectonic_base_domain}",
+    "${var.tectonic_cluster_name}-etcd-4.${var.tectonic_base_domain}",
+    "${var.tectonic_cluster_name}-etcd-5.${var.tectonic_base_domain}",
+    "${var.tectonic_cluster_name}-etcd-6.${var.tectonic_base_domain}",
+  ]
+
   master_count = "${var.tectonic_master_count}"
 }
 
