@@ -20,8 +20,8 @@ send
 EOF
 
   vars {
-    cluster_name  = "${var.cluster_name}"
-    base_domain   = "${var.base_domain}"
+    cluster_name             = "${var.cluster_name}"
+    base_domain              = "${var.base_domain}"
     console_proxy_ip_address = "${azurerm_lb.workers_lb.frontend_ip_configuration.0.private_ip_address}"
   }
 }
