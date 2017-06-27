@@ -12,60 +12,6 @@ resource "azurerm_network_interface" "etcd_nic" {
   }
 }
 
-resource "azurerm_network_security_group" "etcd_group" {
-  name                = "${var.tectonic_cluster_name}-etcd"
-  location            = "${var.location}"
-  resource_group_name = "${var.resource_group_name}"
-
-  security_rule {
-    name                       = "ssh"
-    source_port_range          = "*"
-    destination_port_range     = 22
-    protocol                   = "Tcp"
-    destination_address_prefix = "0.0.0.0/0"
-    source_address_prefix      = "VirtualNetwork"
-    access                     = "Allow"
-    priority                   = "100"
-    direction                  = "Inbound"
-  }
-
-  security_rule {
-    name                       = "etcd-client-perr"
-    source_port_range          = "*"
-    destination_port_range     = "2379-2380"
-    protocol                   = "Tcp"
-    destination_address_prefix = "0.0.0.0/0"
-    source_address_prefix      = "VirtualNetwork"
-    access                     = "Allow"
-    priority                   = "101"
-    direction                  = "Inbound"
-  }
-
-  security_rule {
-    name                       = "all-in"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    protocol                   = "*"
-    destination_address_prefix = "0.0.0.0/0"
-    source_address_prefix      = "0.0.0.0/0"
-    access                     = "Allow"
-    priority                   = "103"
-    direction                  = "Inbound"
-  }
-
-  security_rule {
-    name                       = "all-out"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    protocol                   = "*"
-    destination_address_prefix = "Internet"
-    source_address_prefix      = "0.0.0.0/0"
-    access                     = "Allow"
-    priority                   = "104"
-    direction                  = "Outbound"
-  }
-}
-
 resource "azurerm_lb" "tectonic_etcd_lb" {
   name                = "${var.tectonic_cluster_name}-etcd-lb"
   location            = "${var.location}"
