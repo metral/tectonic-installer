@@ -2,6 +2,7 @@ data "ignition_config" "etcd" {
   count = "${var.etcd_count}"
 
   systemd = [
+    "${data.ignition_systemd_unit.update-engine.id}",
     "${data.ignition_systemd_unit.locksmithd.id}",
     "${data.ignition_systemd_unit.etcd3.*.id[count.index]}",
   ]
@@ -19,17 +20,22 @@ data "ignition_user" "core" {
   ]
 }
 
+data "ignition_systemd_unit" "update-engine" {
+  name = "update-engine.service"
+  mask = true
+}
+
 data "ignition_systemd_unit" "locksmithd" {
   name   = "locksmithd.service"
-  mask = true
   #enable = true
+  mask = true
 
-  #dropin = [
-  #  {
-  #    name    = "40-etcd-lock.conf"
-  #    content = "[Service]\nEnvironment=REBOOT_STRATEGY=etcd-lock\n"
-  #  },
-  #]
+  dropin = [
+    {
+      name    = "40-etcd-lock.conf"
+      content = "[Service]\nEnvironment=REBOOT_STRATEGY=etcd-lock\n"
+    },
+  ]
 }
 
 data "ignition_systemd_unit" "etcd3" {
