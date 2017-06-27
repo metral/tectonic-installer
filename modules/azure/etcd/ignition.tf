@@ -26,7 +26,8 @@ data "ignition_systemd_unit" "update-engine" {
 }
 
 data "ignition_systemd_unit" "locksmithd" {
-  name   = "locksmithd.service"
+  name = "locksmithd.service"
+
   #enable = true
   mask = true
 
