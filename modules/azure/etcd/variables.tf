@@ -33,6 +33,11 @@ variable "base_domain" {
   type = "string"
 }
 
+// The cluster prefix
+variable "cluster_prefix" {
+  type = "string"
+}
+
 // The name of the cluster.
 variable "cluster_name" {
   type = "string"
@@ -56,4 +61,8 @@ variable "network_interface_ids" {
 
 variable "endpoints" {
   type = "list"
+}
+
+variable "role" {
+  type = "string"
 }

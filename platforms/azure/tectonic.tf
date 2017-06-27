@@ -6,6 +6,7 @@ module "bootkube" {
   oidc_issuer_url    = "https://${module.masters.ingress_internal_fqdn}/identity"
 
   # Platform-independent variables wiring, do not modify.
+  existing_certs   = "${var.tectonic_existing_certs}"
   container_images = "${var.tectonic_container_images}"
   versions         = "${var.tectonic_versions}"
 
@@ -35,10 +36,14 @@ module "tectonic" {
   source   = "../../modules/tectonic"
   platform = "azure"
 
+  cluster_prefix = "${var.tectonic_cluster_prefix}"
+  cluster_name   = "${var.tectonic_cluster_name}"
+
   base_address       = "${module.masters.ingress_internal_fqdn}"
   kube_apiserver_url = "https://${module.masters.api_internal_fqdn}:443"
 
   # Platform-independent variables wiring, do not modify.
+  existing_certs   = "${var.tectonic_existing_certs}"
   container_images = "${var.tectonic_container_images}"
   versions         = "${var.tectonic_versions}"
 
@@ -68,12 +73,14 @@ module "tectonic" {
 resource "null_resource" "tectonic" {
   depends_on = ["module.tectonic", "module.masters"]
 
+  # We can't SSH into the proxy, so we select the first master node to copy
+  # the cluster assets and start Tectonic.
   triggers {
-    api-endpoint = "${module.masters.api_external_fqdn}"
+    api-endpoint = "${module.masters.ip_address[0]}"
   }
 
   connection {
-    host  = "${module.masters.api_external_fqdn}"
+    host  = "${module.masters.ip_address[0]}"
     user  = "core"
     agent = true
   }
@@ -85,8 +92,8 @@ resource "null_resource" "tectonic" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir -p /opt",
       "sudo rm -rf /opt/tectonic",
+      "sudo mkdir -p /opt",
       "sudo mv /home/core/tectonic /opt/",
       "sudo systemctl start ${var.tectonic_vanilla_k8s ? "bootkube.service" : "tectonic.service"}",
     ]

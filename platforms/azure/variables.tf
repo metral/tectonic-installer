@@ -215,3 +215,25 @@ EOF
 
   default = ""
 }
+
+variable "tectonic_azure_create_nsg_rules" {
+  description = <<EOF
+If set to true, all required rules will be created for all Network
+Security Groups. Otherwise, no rules are added to the NSGs and are expected
+to already exist.
+EOF
+
+  default = true
+}
+
+variable "tectonic_azure_dns_server" {
+  type = "string"
+
+  description = <<EOF
+(optional) The IP address of the external DNS server to use. This is configured
+as the resolver for the proxy used in front of the Tectonic Console, and it is also used
+during the DNS registration of each individual node in the cluster at creation.
+EOF
+
+  default = ""
+}

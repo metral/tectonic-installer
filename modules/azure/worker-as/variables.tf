@@ -33,6 +33,11 @@ variable "base_domain" {
   type = "string"
 }
 
+// The cluster prefix
+variable "cluster_prefix" {
+  type = "string"
+}
+
 // The name of the cluster.
 variable "cluster_name" {
   type = "string"
@@ -73,5 +78,9 @@ variable "cloud_provider" {
 }
 
 variable "kubelet_node_label" {
+  type = "string"
+}
+
+variable "role" {
   type = "string"
 }

@@ -6,11 +6,11 @@
 
 # Generate unique storage name
 resource "random_id" "tectonic_master_storage_name" {
-  byte_length = 4
+  byte_length = 2
 }
 
 resource "azurerm_storage_account" "tectonic_master" {
-  name                = "${random_id.tectonic_master_storage_name.hex}"
+  name                = "${var.cluster_name}${random_id.tectonic_master_storage_name.hex}m"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "${var.storage_account_type}"
@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "tectonic_master" {
 }
 
 resource "azurerm_storage_container" "tectonic_master" {
-  name                  = "${var.cluster_name}-vhd-master"
+  name                  = "${var.cluster_name}-master-vhd"
   resource_group_name   = "${var.resource_group_name}"
   storage_account_name  = "${azurerm_storage_account.tectonic_master.name}"
   container_access_type = "private"
@@ -54,7 +54,7 @@ resource "azurerm_virtual_machine_scale_set" "tectonic_masters" {
     publisher = "CoreOS"
     offer     = "CoreOS"
     sku       = "Stable"
-    version   = "latest"
+    version   = "1353.8.0"
   }
 
   storage_profile_os_disk {
@@ -66,7 +66,7 @@ resource "azurerm_virtual_machine_scale_set" "tectonic_masters" {
   }
 
   os_profile {
-    computer_name_prefix = "tectonic-master-"
+    computer_name_prefix = "${var.cluster_name}-master-"
     admin_username       = "core"
     admin_password       = ""
 

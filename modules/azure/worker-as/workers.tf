@@ -1,10 +1,10 @@
 # Generate unique storage name
 resource "random_id" "tectonic_storage_name" {
-  byte_length = 4
+  byte_length = 2
 }
 
 resource "azurerm_storage_account" "tectonic_worker" {
-  name                = "${random_id.tectonic_storage_name.hex}"
+  name                = "${var.cluster_name}${random_id.tectonic_storage_name.hex}wrk"
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
   account_type        = "${var.storage_account_type}"
@@ -21,11 +21,11 @@ resource "azurerm_storage_container" "tectonic_worker" {
   container_access_type = "private"
 }
 
-# resource "azurerm_lb_backend_address_pool" "workers" {
-#   name                = "workers-lb-pool"
-#   resource_group_name = "${var.resource_group_name}"
-#   loadbalancer_id     = "${azurerm_lb.tectonic_lb.id}"
-# }
+resource "azurerm_lb_backend_address_pool" "workers" {
+  name                = "workers-lb-pool"
+  resource_group_name = "${var.resource_group_name}"
+  loadbalancer_id     = "${azurerm_lb.workers_lb.id}"
+}
 
 resource "azurerm_availability_set" "tectonic_workers" {
   name                = "${var.cluster_name}-workers"
@@ -44,13 +44,13 @@ resource "azurerm_network_interface" "tectonic_worker" {
     name                          = "${var.cluster_name}-WorkerIPConfiguration"
     subnet_id                     = "${var.subnet}"
 
-    # load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.workers.id}"]
+    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.workers.id}"]
   }
 }
 
 resource "azurerm_virtual_machine" "tectonic_worker" {
   count                 = "${var.worker_count}"
-  name                  = "${var.cluster_name}-worker${count.index}"
+  name                  = "${format("%s-%s-%03d", var.cluster_name, var.role, count.index + 1)}"
   location              = "${var.location}"
   resource_group_name   = "${var.resource_group_name}"
   network_interface_ids = ["${element(azurerm_network_interface.tectonic_worker.*.id, count.index)}"]
@@ -61,7 +61,7 @@ resource "azurerm_virtual_machine" "tectonic_worker" {
     publisher = "CoreOS"
     offer     = "CoreOS"
     sku       = "Stable"
-    version   = "latest"
+    version   = "1353.8.0"
   }
 
   storage_os_disk {
@@ -73,7 +73,7 @@ resource "azurerm_virtual_machine" "tectonic_worker" {
   }
 
   os_profile {
-    computer_name  = "${var.cluster_name}-worker${count.index}"
+    computer_name  = "${format("%s%s%03d", var.cluster_name, "w", count.index + 1)}"
     admin_username = "core"
     admin_password = ""
     custom_data    = "${base64encode("${data.ignition_config.worker.rendered}")}"

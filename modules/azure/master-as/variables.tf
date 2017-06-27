@@ -28,6 +28,11 @@ variable "base_domain" {
   type = "string"
 }
 
+// The cluster prefix
+variable "cluster_prefix" {
+  type = "string"
+}
+
 // The name of the cluster.
 variable "cluster_name" {
   type = "string"
@@ -96,4 +101,12 @@ variable "tectonic_service_disabled" {
 
 variable "use_custom_fqdn" {
   default = false
+}
+
+variable "role" {
+  type = "string"
+}
+
+variable "dns_server" {
+  type = "string"
 }
