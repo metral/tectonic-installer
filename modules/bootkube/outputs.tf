@@ -48,6 +48,10 @@ output "ca_cert" {
   value = "${var.ca_cert == "" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : var.ca_cert}"
 }
 
+output "local_ca_cert" {
+  value = "${var.existing_certs["ca_key_path"] == "/dev/null" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : file(var.existing_certs["ca_cert_path"])}"
+}
+
 output "ca_key_alg" {
   value = "${var.ca_cert == "" ? join(" ", tls_self_signed_cert.kube_ca.*.key_algorithm) : var.ca_key_alg}"
 }
