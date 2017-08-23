@@ -11,6 +11,7 @@ data "ignition_config" "node" {
     "${data.ignition_file.kubelet-env.id}",
     "${data.ignition_file.profile_node.id}",
     "${data.ignition_file.profile_systemd.id}",
+    "${data.ignition_file.profile_systemd.id}",
   ]
 
   systemd = [
@@ -20,6 +21,7 @@ data "ignition_config" "node" {
     "${data.ignition_systemd_unit.kubelet-env.id}",
     "${data.ignition_systemd_unit.bootkube.id}",
     "${data.ignition_systemd_unit.tectonic.id}",
+    "${data.ignition_systemd_unit.rpc-statd.id}",
   ]
 
   networkd = [
@@ -154,6 +156,24 @@ DefaultEnvironment=https_proxy=${var.https_proxy}
 DefaultEnvironment=no_proxy=${var.no_proxy}
 EOF
   }
+}
+
+data "ignition_file" "nfs_node" {
+  count      = "${var.nfs_enabled ? 1 : 0}"
+  path       = "/etc/conf.d/nfs"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = <<EOF
+OPTS_RPC_MOUNTD=""
+EOF
+  }
+}
+
+data "ignition_systemd_unit" "rpc-statd" {
+  name    = "rpc-statd.service"
+  enable  = "${var.nfs_enabled ? true : false}"
 }
 
 data "ignition_networkd_unit" "vmnetwork" {
