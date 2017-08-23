@@ -224,3 +224,9 @@ variable "tectonic_vmware_worker_datastore" {
   default     = ""
   description = "The storage LUN used by worker nodes. In order to use vSphere Datastore Cluster use the syntax DatastoreClusterName/datastore."
 }
+
+variable "tectonic_vmware_nfs_enabled" {
+  type        = "string"
+  default     = "false"
+  description = "enable NFS mount"
+}
