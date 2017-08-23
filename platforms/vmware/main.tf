@@ -74,6 +74,7 @@ module "masters" {
   http_proxy              =  "${var.tectonic_vmware_httpproxy}"
   https_proxy             =  "${var.tectonic_vmware_httpsproxy}"
   no_proxy                =  "${var.tectonic_vmware_noproxy}"
+  nfs_enabled             = "${var.tectonic_vmware_nfs_enabled}"
 
 }
 
@@ -113,5 +114,6 @@ module "workers" {
   http_proxy              =  "${var.tectonic_vmware_httpproxy}"
   https_proxy             =  "${var.tectonic_vmware_httpsproxy}"
   no_proxy                =  "${var.tectonic_vmware_noproxy}"
+  nfs_enabled             = "${var.tectonic_vmware_nfs_enabled}"
 
 }
