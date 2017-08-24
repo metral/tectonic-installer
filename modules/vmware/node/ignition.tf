@@ -12,6 +12,7 @@ data "ignition_config" "node" {
     "${data.ignition_file.profile_node.id}",
     "${data.ignition_file.profile_systemd.id}",
     "${data.ignition_file.nfs_node.id}",
+    "${data.ignition_file.iscsi_node.id}",
   ]
 
   systemd = [
@@ -22,6 +23,7 @@ data "ignition_config" "node" {
     "${data.ignition_systemd_unit.bootkube.id}",
     "${data.ignition_systemd_unit.tectonic.id}",
     "${data.ignition_systemd_unit.rpc-statd.id}",
+    "${data.ignition_systemd_unit.iscsid.id}",
   ]
 
   networkd = [

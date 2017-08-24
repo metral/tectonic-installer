@@ -178,3 +178,8 @@ variable "nfs_enabled" {
   type        = "string"
   description = "NFS mount enabled"
 }
+
+variable "iscsi_enabled" {
+  type        = "string"
+  description = "iSCSI connections enabled"
+}
