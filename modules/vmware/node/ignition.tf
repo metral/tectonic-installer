@@ -175,6 +175,24 @@ EOF
 data "ignition_systemd_unit" "rpc-statd" {
   name    = "rpc-statd.service"
   enable  = "${var.nfs_enabled ? true : false}"
+
+  content = <<EOF
+  [Unit]
+  Description=NFS status monitor for NFSv2/3 locking.
+  DefaultDependencies=no
+  Conflicts=umount.target
+  Requires=nss-lookup.target rpcbind.target
+  After=network.target nss-lookup.target rpcbind.target
+  PartOf=nfs-utils.service
+
+  [Service]
+  Type=forking
+  PIDFile=/var/run/rpc.statd.pid
+  ExecStart=/sbin/rpc.statd --no-notify $STATDARGS
+
+  [Install]
+  WantedBy=multi-user.target
+EOF
 }
 
 data "ignition_networkd_unit" "vmnetwork" {
