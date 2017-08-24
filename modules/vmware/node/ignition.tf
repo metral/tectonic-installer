@@ -195,6 +195,24 @@ data "ignition_systemd_unit" "rpc-statd" {
 EOF
 }
 
+data "ignition_file" "iscsi_node" {
+  count      = "${var.iscsi_enabled ? 1 : 0}"
+  path       = "/etc/iscsi/iscsid.conf"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = <<EOF
+
+EOF
+  }
+}
+
+data "ignition_systemd_unit" "iscsid" {
+  name    = "iscsid.service"
+  enable  = "${var.iscsi_enabled ? true : false}"
+}
+
 data "ignition_networkd_unit" "vmnetwork" {
   count = "${var.instance_count}"
   name  = "00-ens192.network"
