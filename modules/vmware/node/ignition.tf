@@ -13,6 +13,7 @@ data "ignition_config" "node" {
     "${data.ignition_file.profile_systemd.id}",
     "${data.ignition_file.nfs_node.id}",
     "${data.ignition_file.iscsi_node.id}",
+    "${data.ignition_file.trusted_ca.id}",
   ]
 
   systemd = [
@@ -24,6 +25,7 @@ data "ignition_config" "node" {
     "${data.ignition_systemd_unit.tectonic.id}",
     "${data.ignition_systemd_unit.rpc-statd.id}",
     "${data.ignition_systemd_unit.iscsid.id}",
+    "${data.ignition_systemd_unit.update_ca.id}",
   ]
 
   networkd = [
@@ -254,3 +256,30 @@ KUBELET_IMAGE_TAG="${var.kube_image_tag}"
 EOF
   }
 }
+
+data "ignition_file" "trusted_ca" {
+  path       = "/etc/ssl/certs/Local_Trusted.pem"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = "${file(var.trusted_ca)}"
+  }
+}
+
+data "ignition_systemd_unit" "update_ca" {
+  name    = "update_ca.service"
+
+  content = <<EOF
+  [Unit]
+  Description=Run script to update the system bundle of Certificate Authorities
+
+  [Service]
+  Type=oneshot
+  ExecStart=/usr/sbin/update-ca-certificates
+
+  [Install]
+  WantedBy=multi-user.target
+EOF
+}
+
