@@ -35,6 +35,7 @@ module "etcd" {
   http_proxy              = "${var.tectonic_vmware_httpproxy}"
   https_proxy             = "${var.tectonic_vmware_httpsproxy}"
   no_proxy                = "${var.tectonic_vmware_noproxy}"
+  trusted_ca              = "${var.tectonic_trusted_ca}"
 
 }
 
@@ -78,6 +79,7 @@ module "masters" {
   no_proxy                =  "${var.tectonic_vmware_noproxy}"
   nfs_enabled             = "${var.tectonic_vmware_nfs_enabled}"
   iscsi_enabled           = "${var.tectonic_vmware_iscsi_enabled}"
+  trusted_ca              = "${var.tectonic_trusted_ca}"
 
 }
 
@@ -120,5 +122,6 @@ module "workers" {
   no_proxy                =  "${var.tectonic_vmware_noproxy}"
   nfs_enabled             = "${var.tectonic_vmware_nfs_enabled}"
   iscsi_enabled           = "${var.tectonic_vmware_iscsi_enabled}"
+  trusted_ca              = "${var.tectonic_trusted_ca}"
 
 }
