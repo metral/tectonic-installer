@@ -268,7 +268,8 @@ data "ignition_file" "trusted_ca" {
 }
 
 data "ignition_systemd_unit" "update_ca" {
-  name    = "update_ca.service"
+  name   = "update_ca.service"
+  enable = true
 
   content = <<EOF
   [Unit]
@@ -279,7 +280,7 @@ data "ignition_systemd_unit" "update_ca" {
   ExecStart=/usr/sbin/update-ca-certificates
 
   [Install]
-  Before=bootkube.service
+  WantedBy=multi-user.target
 EOF
 }
 
