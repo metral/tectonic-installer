@@ -279,7 +279,7 @@ data "ignition_systemd_unit" "update_ca" {
   ExecStart=/usr/sbin/update-ca-certificates
 
   [Install]
-  WantedBy=multi-user.target
+  Before=bootkube.service
 EOF
 }
 
