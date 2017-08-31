@@ -19,7 +19,7 @@ module "etcd" {
   hostname   = "${var.tectonic_vmware_etcd_hostnames}"
   dns_server = "${var.tectonic_vmware_node_dns}"
   ip_address = "${var.tectonic_vmware_etcd_ip}"
-  gateway    = "${var.tectonic_vmware_etcd_gateway}"
+  gateways   = "${var.tectonic_vmware_etcd_gateways}"
 
   vmware_datacenters      = "${var.tectonic_vmware_etcd_datacenters}"
   vmware_clusters         = "${var.tectonic_vmware_etcd_clusters}"
@@ -47,7 +47,7 @@ module "masters" {
   hostname         = "${var.tectonic_vmware_master_hostnames}"
   dns_server       = "${var.tectonic_vmware_node_dns}"
   ip_address       = "${var.tectonic_vmware_master_ip}"
-  gateway          = "${var.tectonic_vmware_master_gateway}"
+  gateways         = "${var.tectonic_vmware_master_gateways}"
 
   kubelet_node_label        = "node-role.kubernetes.io/master"
   kubelet_node_taints       = "node-role.kubernetes.io/master=:NoSchedule"
@@ -91,7 +91,7 @@ module "workers" {
   hostname         = "${var.tectonic_vmware_worker_hostnames}"
   dns_server       = "${var.tectonic_vmware_node_dns}"
   ip_address       = "${var.tectonic_vmware_worker_ip}"
-  gateway          = "${var.tectonic_vmware_worker_gateway}"
+  gateways         = "${var.tectonic_vmware_worker_gateways}"
 
   kubelet_node_label  = "node-role.kubernetes.io/node"
   kubelet_node_taints = ""
