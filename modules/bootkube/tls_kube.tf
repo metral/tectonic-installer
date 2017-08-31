@@ -22,8 +22,8 @@ resource "tls_private_key" "kube_ca" {
 resource "tls_self_signed_cert" "kube_ca" {
   count = "${var.existing_certs["ca_key_path"] == "/dev/null" ? 1 : 0}"
 
-  key_algorithm   = "${tls_private_key.kube-ca.algorithm}"
-  private_key_pem = "${tls_private_key.kube-ca.private_key_pem}"
+  key_algorithm   = "${tls_private_key.kube_ca.algorithm}"
+  private_key_pem = "${tls_private_key.kube_ca.private_key_pem}"
 
   subject {
     common_name  = "kube-ca"
@@ -111,7 +111,7 @@ resource "local_file" "apiserver_key" {
   filename = "./generated/tls/apiserver.key"
 }
 
-resource "local_file" "apiserver_crt" {
+resource "local_file" "apiserver_cert" {
   content  = "${var.existing_certs["apiserver_key_path"] == "/dev/null" ? join(" ", tls_locally_signed_cert.apiserver.*.cert_pem) : file(var.existing_certs["apiserver_cert_path"])}"
   filename = "./generated/tls/apiserver.crt"
 }
