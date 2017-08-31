@@ -21,7 +21,8 @@ module "etcd" {
   ip_address = "${var.tectonic_vmware_etcd_ip}"
   gateway    = "${var.tectonic_vmware_etcd_gateway}"
 
-  vmware_datacenter       = "${var.tectonic_vmware_etcd_datacenters}"
+  vmware_datacenters      = "${var.tectonic_vmware_etcd_datacenters}"
+  vmware_cluster          = "${var.tectonic_vmware_clusters}"
 
   vmware_cluster          = "${var.tectonic_vmware_cluster}"
   vmware_resource_pool    = "${var.tectonic_vmware_resource_pool}"
@@ -61,7 +62,7 @@ module "masters" {
   kube_image_url            = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$1")}"
   kube_image_tag            = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$2")}"
 
-  vmware_datacenter       = "${var.tectonic_vmware_master_datacenters}"
+  vmware_datacenters      = "${var.tectonic_vmware_master_datacenters}"
 
   vmware_cluster          = "${var.tectonic_vmware_cluster}"
   vmware_resource_pool    = "${var.tectonic_vmware_resource_pool}"
@@ -105,7 +106,7 @@ module "workers" {
   kube_image_url      = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$1")}"
   kube_image_tag      = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$2")}"
 
-  vmware_datacenter       = "${var.tectonic_vmware_worker_datacenters}"
+  vmware_datacenters      = "${var.tectonic_vmware_worker_datacenters}"
 
   vmware_cluster          = "${var.tectonic_vmware_cluster}"
   vmware_resource_pool    = "${var.tectonic_vmware_resource_pool}"
