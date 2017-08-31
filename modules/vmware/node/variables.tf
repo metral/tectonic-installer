@@ -72,7 +72,7 @@ variable core_public_keys {
 }
 
 variable vmware_datacenter {
-  type        = "string"
+  type        = "map"
   description = "vSphere Datacenter to create VMs in"
 }
 
