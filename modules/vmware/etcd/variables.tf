@@ -60,11 +60,6 @@ variable vm_network_label {
   description = "ETCD VMs PortGroup"
 }
 
-variable vm_disk_datastore {
-  type        = "string"
-  description = "Datastore to create ETCD VM in "
-}
-
 variable vm_disk_template {
   type        = "string"
   description = "Disk template to use for cloning ETCD VM CoreOS Container Linux"
