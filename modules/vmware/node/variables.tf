@@ -81,6 +81,11 @@ variable vmware_clusters {
   description = "vSphere Cluster to create VMs in"
 }
 
+variable vm_disk_datastores {
+  type        = "map"
+  description = "vSphere Datastore to use for VMs"
+}
+
 variable vm_vcpu {
   type        = "string"
   description = "VMs vCPU count"
@@ -94,11 +99,6 @@ variable vm_memory {
 variable vm_network_label {
   type        = "string"
   description = "VMs PortGroup"
-}
-
-variable vm_disk_datastore {
-  type        = "string"
-  description = "Datastore to create VM(s) in "
 }
 
 variable vm_disk_template {
