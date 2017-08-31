@@ -81,34 +81,29 @@ variable vmware_clusters {
   description = "vSphere Cluster to create VMs in"
 }
 
-variable vmware_resource_pool {
-  type        = "string"
-  description = "vSphere resource pool to create VMs in"
+variable vm_disk_datastores {
+  type        = "map"
+  description = "vSphere Datastore to use for VMs"
 }
 
 variable vm_vcpu {
   type        = "string"
-  description = "VMs vCPU count"
+  description = "ETCD VMs vCPU count"
 }
 
 variable vm_memory {
   type        = "string"
-  description = "VMs Memory size in MB"
+  description = "ETCD VMs Memory size in MB"
 }
 
 variable vm_network_label {
   type        = "string"
-  description = "VMs PortGroup"
-}
-
-variable vm_disk_datastore {
-  type        = "string"
-  description = "Datastore to create VM(s) in "
+  description = "ETCD VMs PortGroup"
 }
 
 variable vm_disk_template {
   type        = "string"
-  description = "Disk template to use for cloning CoreOS Container Linux"
+  description = "Disk template to use for cloning ETCD VM CoreOS Container Linux"
 }
 
 variable vm_disk_template_folder {
