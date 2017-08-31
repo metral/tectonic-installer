@@ -35,20 +35,9 @@ variable "tectonic_vmware_network" {
   description = "Portgroup to attach the cluster nodes"
 }
 
-variable "tectonic_vmware_datacenter" {
-  type        = "string"
-  description = "Virtual DataCenter to deploy VMs"
-}
-
 variable "tectonic_vmware_cluster" {
   type        = "string"
   description = "vCenter Cluster used to create VMs under"
-}
-
-variable "tectonic_vmware_resource_pool" {
-  type        = "string"
-  description = "(optional) The name of a Resource Pool in which to launch the virtual machine. Requires full path. Full path can be obtained by executing `govc pool.info $ResourcePoolName`"
-  default     = ""
 }
 
 // # Global
@@ -60,7 +49,7 @@ variable "tectonic_vmware_ssh_authorized_key" {
 
 variable "tectonic_vmware_ssh_private_key_path" {
   type        = "string"
-  description = "SSH private key file corresponding to tectonic_vmware_ssh_authorized_key. If not provided, SSH agent will be used."
+  description = "SSH private key file in .pem format corresponding to tectonic_vmware_ssh_authorized_key. If not provided, SSH agent will be used."
   default     = ""
 }
 
@@ -98,12 +87,25 @@ variable "tectonic_vmware_etcd_memory" {
 variable "tectonic_vmware_etcd_hostnames" {
   type = "map"
 
-  description = <<EOF
-  Terraform map of etcd node(s) Hostnames, Example:
+  description = <<eof
+  terraform map of etcd node(s) hostnames, example: 
   tectonic_vmware_etcd_hostnames = {
   "0" = "mycluster-etcd-0"
   "1" = "mycluster-etcd-1"
   "2" = "mycluster-etcd-2"
+}
+eof
+}
+
+variable "tectonic_vmware_etcd_datacenters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of etcd node(s) Virtual DataCenters, example:
+  tectonic_vmware_etcd_datacenters = {
+  "0" = "myvmwaredc-0"
+  "1" = "myvmwaredc-1"
+  "2" = "myvmwaredc-2"
 }
 EOF
 }
@@ -112,7 +114,7 @@ variable "tectonic_vmware_etcd_ip" {
   type = "map"
 
   description = <<EOF
-  Terraform map of etcd node(s) IP Addresses, Example:
+  Terraform map of etcd node(s) IP Addresses, Example: 
   tectonic_vmware_etcd_ip = {
   "0" = "192.168.246.10/24"
   "1" = "192.168.246.11/24"
@@ -144,10 +146,23 @@ variable "tectonic_vmware_master_hostnames" {
   type = "map"
 
   description = <<EOF
-  Terraform map of Master node(s) Hostnames, Example:
+  Terraform map of Master node(s) Hostnames, Example: 
   tectonic_vmware_master_hostnames = {
   "0" = "mycluster-master-0"
   "1" = "mycluster-master-1"
+}
+EOF
+}
+
+variable "tectonic_vmware_master_datacenters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of master node(s) Virtual DataCenters, example:
+  tectonic_vmware_master_datacenters = {
+  "0" = "myvmwaredc-0"
+  "1" = "myvmwaredc-1"
+  "2" = "myvmwaredc-2"
 }
 EOF
 }
@@ -156,8 +171,8 @@ variable "tectonic_vmware_master_ip" {
   type = "map"
 
   description = <<EOF
-  Terraform map of Master node(s) IP Addresses, Example:
-  tectonic_vmware_vm_masterips = {
+  Terraform map of Master node(s) IP Addresses, Example: 
+  tectonic_vmware_master_ip = {
   "0" = "192.168.246.20/24"
   "1" = "192.168.246.21/24"
 }
@@ -187,10 +202,22 @@ variable "tectonic_vmware_worker_hostnames" {
   type = "map"
 
   description = <<EOF
-  Terraform map of Worker node(s) Hostnames, Example:
-  tectonic_vmware_vm_worker_hostnames = {
+  Terraform map of Worker node(s) Hostnames, Example: 
+  tectonic_vmware_worker_hostnames = {
   "0" = "mycluster-worker-0"
   "1" = "mycluster-worker-1"
+}
+EOF
+}
+
+variable "tectonic_vmware_worker_datacenters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of worker node(s) Virtual DataCenters, example:
+  tectonic_vmware_worker_datacenters = {
+  "0" = "myvmwaredc-0"
+  "1" = "myvmwaredc-1"
 }
 EOF
 }
@@ -199,8 +226,8 @@ variable "tectonic_vmware_worker_ip" {
   type = "map"
 
   description = <<EOF
-  Terraform map of Worker node(s) IP Addresses, Example:
-  tectonic_vmware_vm_workerips = {
+  Terraform map of Worker node(s) IP Addresses, Example: 
+  tectonic_vmware_worker_ip = {
   "0" = "192.168.246.30/24"
   "1" = "192.168.246.31/24"
 }
