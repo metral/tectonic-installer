@@ -53,7 +53,7 @@ resource "local_file" "kube_ca_crt" {
 #This cert will be used as --client-ca-file any request presenting a client certificate signed by one of the authorities in the client-ca-file is authenticated with an identity corresponding to the CommonName of the client certificate.
 
 resource "local_file" "kube_client_ca" {
-  content  = "${var.existing_certs["ca_key_path"] == "/dev/null" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : file(var.existing_certs["ca_cert_path"])}"
+  content  = "${var.existing_certs["ca_key_path"] == "/dev/null" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : file(var.existing_certs["ca_crt_path"])}"
   filename = "./generated/tls/client-ca.crt"
 }
 
