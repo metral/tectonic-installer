@@ -174,6 +174,19 @@ variable "tectonic_vmware_etcd_datastore" {
   description = "The storage LUN used by etcd nodes. In order to use vSphere Datastore Cluster use the syntax DatastoreClusterName/datastore."
 }
 
+variable "tectonic_etcd_ntp" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of etcd node(s) NTP sources, Example:
+  tectonic_vmware_etcd_ip = {
+  "0" = "my.ntp.com"
+  "1" = "my.ntp.com"
+  "2" = "my.ntp.com"
+}
+EOF
+}
+
 // ## Masters
 
 variable "tectonic_vmware_master_vcpu" {
@@ -273,6 +286,18 @@ variable "tectonic_vmware_master_datastore" {
   type        = "string"
   default     = ""
   description = "The storage LUN used by master nodes. In order to use vSphere Datastore Cluster use the syntax DatastoreClusterName/datastore."
+}
+
+variable "tectonic_master_ntp" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of master node(s) NTP time sources, Example:
+  tectonic_vmware_master_ip = {
+  "0" = "my.ntp.com"
+  "1" = "my.ntp.com"
+}
+EOF
 }
 
 // ## Workers
