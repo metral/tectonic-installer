@@ -79,7 +79,7 @@ variable "tectonic_vmware_etcd_hostnames" {
   "1" = "mycluster-etcd-1"
   "2" = "mycluster-etcd-2"
 }
-eof
+EOF
 }
 
 variable "tectonic_vmware_etcd_datacenters" {
