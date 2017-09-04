@@ -25,26 +25,6 @@ variable "tectonic_vmware_folder" {
   description = "vSphere Folder to create and add the Tectonic nodes"
 }
 
-variable "tectonic_vmware_datastore" {
-  type        = "string"
-  description = "Datastore to deploy Tectonic"
-}
-
-variable "tectonic_vmware_network" {
-  type        = "string"
-  description = "Portgroup to attach the cluster nodes"
-}
-
-variable "tectonic_vmware_datacenter" {
-  type        = "string"
-  description = "Virtual DataCenter to deploy VMs"
-}
-
-variable "tectonic_vmware_cluster" {
-  type        = "string"
-  description = "vCenter Cluster used to create VMs under"
-}
-
 variable "tectonic_vmware_resource_pool" {
   type        = "string"
   description = "(optional) The name of a Resource Pool in which to launch the virtual machine. Requires full path. Full path can be obtained by executing `govc pool.info $ResourcePoolName`"
