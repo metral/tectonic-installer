@@ -43,6 +43,7 @@ variable vmware_clusters {
 variable vm_disk_datastores {
   type        = "map"
   description = "vSphere Datastore to use for VMs"
+}
 
 variable vmware_resource_pool {
   type        = "string"
