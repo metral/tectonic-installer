@@ -25,19 +25,10 @@ variable "tectonic_vmware_folder" {
   description = "vSphere Folder to create and add the Tectonic nodes"
 }
 
-variable "tectonic_vmware_network" {
+variable "tectonic_vmware_resource_pool" {
   type        = "string"
-  description = "Portgroup to attach the cluster nodes"
-}
-
-variable "tectonic_vmware_datacenter" {
-  type        = "string"
-  description = "Virtual DataCenter to deploy VMs"
-}
-
-variable "tectonic_vmware_cluster" {
-  type        = "string"
-  description = "vCenter Cluster used to create VMs under"
+  description = "(optional) The name of a Resource Pool in which to launch the virtual machine. Requires full path. Full path can be obtained by executing `govc pool.info $ResourcePoolName`"
+  default     = ""
 }
 
 // # Global
@@ -55,7 +46,7 @@ variable "tectonic_vmware_ssh_private_key_path" {
 
 variable "tectonic_vmware_node_dns" {
   type        = "string"
-  description = "DNS Server to be used by Virtual Machine(s). Multiple DNS servers can be separated by whitespace. Example: `\"192.168.1.1 192.168.2.1\"`"
+  description = "DNS Server to be useddd by Virtual Machine(s)"
 }
 
 variable "tectonic_vmware_controller_domain" {
@@ -88,7 +79,7 @@ variable "tectonic_vmware_etcd_hostnames" {
   type = "map"
 
   description = <<EOF
-  Terraform map of etcd node(s) Hostnames, Example: 
+  Terraform map of etcd node(s) Hostnames, Example:
   tectonic_vmware_etcd_hostnames = {
   "0" = "mycluster-etcd-0"
   "1" = "mycluster-etcd-1"
@@ -97,11 +88,63 @@ variable "tectonic_vmware_etcd_hostnames" {
 EOF
 }
 
+variable "tectonic_vmware_etcd_datacenters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of etcd node(s) Virtual DataCenters, example:
+  tectonic_vmware_etcd_datacenters = {
+  "0" = "myvmwaredc-0"
+  "1" = "myvmwaredc-1"
+  "2" = "myvmwaredc-2"
+}
+EOF
+}
+
+variable "tectonic_vmware_etcd_clusters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of etcd node(s) vSphere Clusters, example:
+  tectonic_vmware_etcd_clusters = {
+  "0" = "myvmwarecluster-0"
+  "1" = "myvmwarecluster-1"
+  "2" = "myvmwarecluster-2"
+}
+EOF
+}
+
+variable "tectonic_vmware_etcd_datastores" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of etcd node(s) vSphere Datastores, example:
+  tectonic_vmware_etcd_datastores = {
+  "0" = "myvmwareds-0"
+  "1" = "myvmwareds-1"
+  "2" = "myvmwareds-2"
+}
+EOF
+}
+
+variable "tectonic_vmware_etcd_gateways" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of etcd node(s) network gateway IP, example:
+  tectonic_vmware_etcd_gateways = {
+  "0" = "192.168.246.99/24"
+  "1" = "192.168.246.99/24"
+  "2" = "192.168.246.99/24"
+}
+EOF
+}
+
 variable "tectonic_vmware_etcd_ip" {
   type = "map"
 
   description = <<EOF
-  Terraform map of etcd node(s) IP Addresses, Example: 
+  Terraform map of etcd node(s) IP Addresses, Example:
   tectonic_vmware_etcd_ip = {
   "0" = "192.168.246.10/24"
   "1" = "192.168.246.11/24"
@@ -110,15 +153,30 @@ variable "tectonic_vmware_etcd_ip" {
 EOF
 }
 
-variable "tectonic_vmware_etcd_gateway" {
-  type        = "string"
-  description = "Default Gateway IP address for etcd nodes(s)"
+variable "tectonic_vmware_etcd_networks" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of etcd node(s) vSphere network portgroups, Example:
+  tectonic_vmware_etcd_ip = {
+  "0" = "mynet-0"
+  "1" = "mynet-1"
+  "2" = "mynet-2"
+}
+EOF
 }
 
-variable "tectonic_vmware_etcd_datastore" {
-  type        = "string"
-  default     = ""
-  description = "The storage LUN used by etcd nodes. In order to use vSphere Datastore Cluster use the syntax DatastoreClusterName/datastore."
+variable "tectonic_etcd_ntp" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of etcd node(s) NTP sources, Example:
+  tectonic_vmware_etcd_ip = {
+  "0" = "my.ntp.com"
+  "1" = "my.ntp.com"
+  "2" = "my.ntp.com"
+}
+EOF
 }
 
 // ## Masters
@@ -139,10 +197,62 @@ variable "tectonic_vmware_master_hostnames" {
   type = "map"
 
   description = <<EOF
-  Terraform map of Master node(s) Hostnames, Example: 
+  Terraform map of Master node(s) Hostnames, Example:
   tectonic_vmware_master_hostnames = {
   "0" = "mycluster-master-0"
   "1" = "mycluster-master-1"
+}
+EOF
+}
+
+variable "tectonic_vmware_master_datacenters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of master node(s) Virtual DataCenters, example:
+  tectonic_vmware_master_datacenters = {
+  "0" = "myvmwaredc-0"
+  "1" = "myvmwaredc-1"
+  "2" = "myvmwaredc-2"
+}
+EOF
+}
+
+variable "tectonic_vmware_master_clusters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of master node(s) vSphere Clusters, example:
+  tectonic_vmware_master_clusters = {
+  "0" = "myvmwarecluster-0"
+  "1" = "myvmwarecluster-1"
+  "2" = "myvmwarecluster-2"
+}
+EOF
+}
+
+variable "tectonic_vmware_master_datastores" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of master node(s) vSphere Datastores, example:
+  tectonic_vmware_master_datastores = {
+  "0" = "myvmwareds-0"
+  "1" = "myvmwareds-1"
+  "2" = "myvmwareds-2"
+}
+EOF
+}
+
+variable "tectonic_vmware_master_gateways" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of master node(s) network gateway IP, example:
+  tectonic_vmware_master_gateways = {
+  "0" = "192.168.246.99/24"
+  "1" = "192.168.246.99/24"
+  "2" = "192.168.246.99/24"
 }
 EOF
 }
@@ -159,15 +269,28 @@ variable "tectonic_vmware_master_ip" {
 EOF
 }
 
-variable "tectonic_vmware_master_gateway" {
-  type        = "string"
-  description = "Default Gateway IP address for Master nodes(s)"
+variable "tectonic_vmware_master_networks" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of master node(s) vSphere network portgroups, Example:
+  tectonic_vmware_master_ip = {
+  "0" = "mynet-0"
+  "1" = "mynet-1"
+}
+EOF
 }
 
-variable "tectonic_vmware_master_datastore" {
-  type        = "string"
-  default     = ""
-  description = "The storage LUN used by master nodes. In order to use vSphere Datastore Cluster use the syntax DatastoreClusterName/datastore."
+variable "tectonic_master_ntp" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of master node(s) NTP time sources, Example:
+  tectonic_vmware_master_ip = {
+  "0" = "my.ntp.com"
+  "1" = "my.ntp.com"
+}
+EOF
 }
 
 // ## Workers
@@ -196,6 +319,54 @@ variable "tectonic_vmware_worker_hostnames" {
 EOF
 }
 
+variable "tectonic_vmware_worker_datacenters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of worker node(s) Virtual DataCenters, example:
+  tectonic_vmware_worker_datacenters = {
+  "0" = "myvmwaredc-0"
+  "1" = "myvmwaredc-1"
+}
+EOF
+}
+
+variable "tectonic_vmware_worker_clusters" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of worker node(s) vSphere Clusters, example:
+  tectonic_vmware_worker_clusters = {
+  "0" = "myvmwarecluster-0"
+  "1" = "myvmwarecluster-1"
+}
+EOF
+}
+
+variable "tectonic_vmware_worker_datastores" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of worker node(s) vSphere Datastores, example:
+  tectonic_vmware_worker_datastores = {
+  "0" = "myvmwareds-0"
+  "1" = "myvmwareds-1"
+}
+EOF
+}
+
+variable "tectonic_vmware_worker_gateways" {
+  type = "map"
+
+  description = <<EOF
+  terraform map of worker node(s) network gateway IP, example:
+  tectonic_vmware_worker_gateways = {
+  "0" = "192.168.246.99/24"
+  "1" = "192.168.246.99/24"
+}
+EOF
+}
+
 variable "tectonic_vmware_worker_ip" {
   type = "map"
 
@@ -208,13 +379,64 @@ variable "tectonic_vmware_worker_ip" {
 EOF
 }
 
-variable "tectonic_vmware_worker_gateway" {
-  type        = "string"
-  description = "Default Gateway IP address for Master nodes(s)"
+variable "tectonic_vmware_worker_networks" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of worker node(s) vSphere network portgroups, Example:
+  tectonic_vmware_worker_ip = {
+  "0" = "mynet-0"
+  "1" = "mynet-1"
+}
+EOF
 }
 
-variable "tectonic_vmware_worker_datastore" {
+variable "tectonic_worker_ntp" {
+  type = "map"
+
+  description = <<EOF
+  Terraform map of worker node(s) NTP time sources, Example:
+  tectonic_vmware_worker_ip = {
+  "0" = "my.ntp.com"
+  "1" = "my.ntp.com"
+}
+EOF
+}
+
+variable "tectonic_vmware_httpproxy_enabled" {
   type        = "string"
-  default     = ""
-  description = "The storage LUN used by worker nodes. In order to use vSphere Datastore Cluster use the syntax DatastoreClusterName/datastore."
+  default     = "false"
+  description = "switch to configure hosts to use outbound http proxy"
+}
+
+variable "tectonic_vmware_httpproxy" {
+  type        = "string"
+  description = "http_proxy variable for Nodes"
+}
+
+variable "tectonic_vmware_httpsproxy" {
+  type        = "string"
+  description = "https_proxy variable for Nodes"
+}
+
+variable "tectonic_vmware_noproxy" {
+  type        = "string"
+  description = "no_proxy variable for Nodes"
+}
+
+variable "tectonic_vmware_nfs_enabled" {
+  type        = "string"
+  default     = "false"
+  description = "enable NFS mount"
+}
+
+variable "tectonic_vmware_iscsi_enabled" {
+  type        = "string"
+  default     = "false"
+  description = "enable iSCSI connections"
+}
+
+variable "tectonic_trusted_ca" {
+  type        = "string"
+  description = "Path to CA to add to trusted CAs on cluster nodes"
 }

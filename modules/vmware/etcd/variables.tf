@@ -30,14 +30,24 @@ variable core_public_keys {
   description = "Public Key for Core User"
 }
 
-variable vmware_datacenter {
-  type        = "string"
+variable vmware_datacenters {
+  type        = "map"
   description = "vSphere Datacenter to create VMs in"
 }
 
-variable vmware_cluster {
-  type        = "string"
+variable vmware_clusters {
+  type        = "map"
   description = "vSphere Cluster to create VMs in"
+}
+
+variable vm_disk_datastores {
+  type        = "map"
+  description = "vSphere Datastore to use for VMs"
+}
+
+variable vmware_resource_pool {
+  type        = "string"
+  description = "vSphere resource pool to create VMs in"
 }
 
 variable vm_vcpu {
@@ -50,14 +60,9 @@ variable vm_memory {
   description = "ETCD VMs Memory size in MB"
 }
 
-variable vm_network_label {
-  type        = "string"
-  description = "ETCD VMs PortGroup"
-}
-
-variable vm_disk_datastore {
-  type        = "string"
-  description = "Datastore to create ETCD VM in "
+variable vm_network_labels {
+  type        = "map"
+  description = "ETCD VMs PortGroups"
 }
 
 variable vm_disk_template {
@@ -80,9 +85,9 @@ variable ip_address {
   description = "IP Address of the node"
 }
 
-variable gateway {
-  type        = "string"
-  description = "Gateway of the node"
+variable gateways {
+  type        = "map"
+  description = "Network gateway IP for the node"
 }
 
 variable hostname {
@@ -116,4 +121,34 @@ variable "tls_peer_key_pem" {
 
 variable "tls_peer_crt_pem" {
   default = ""
+}
+
+variable "http_proxy_enabled" {
+  type        = "string"
+  description = "switch to configure hosts to use outbound http proxy"
+}
+
+variable "http_proxy" {
+  type        = "string"
+  description = "http_proxy variable for Nodes"
+}
+
+variable "https_proxy" {
+  type        = "string"
+  description = "https_proxy variable for Nodes"
+}
+
+variable "no_proxy" {
+  type        = "string"
+  description = "no_proxy variable for Nodes"
+}
+
+variable "trusted_ca" {
+  type        = "string"
+  description = "Path to CA to add to trusted CAs on cluster nodes"
+}
+
+variable "ntp_sources" {
+  type        = "map"
+  description = "NTP sources for the node"
 }

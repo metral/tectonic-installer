@@ -56,9 +56,9 @@ variable ip_address {
   description = "IP Address of the node"
 }
 
-variable gateway {
-  type        = "string"
-  description = "Gateway of the node"
+variable gateways {
+  type        = "map"
+  description = "Network gateway IP for the node"
 }
 
 variable hostname {
@@ -71,39 +71,44 @@ variable core_public_keys {
   description = "Public Key for Core User"
 }
 
-variable vmware_datacenter {
-  type        = "string"
+variable vmware_datacenters {
+  type        = "map"
   description = "vSphere Datacenter to create VMs in"
 }
 
-variable vmware_cluster {
-  type        = "string"
+variable vmware_clusters {
+  type        = "map"
   description = "vSphere Cluster to create VMs in"
+}
+
+variable vm_disk_datastores {
+  type        = "map"
+  description = "vSphere Datastore to use for VMs"
+}
+
+variable vmware_resource_pool {
+  type        = "string"
+  description = "vSphere resource pool to create VMs in"
 }
 
 variable vm_vcpu {
   type        = "string"
-  description = "VMs vCPU count"
+  description = "ETCD VMs vCPU count"
 }
 
 variable vm_memory {
   type        = "string"
-  description = "VMs Memory size in MB"
+  description = "ETCD VMs Memory size in MB"
 }
 
-variable vm_network_label {
-  type        = "string"
-  description = "VMs PortGroup"
-}
-
-variable vm_disk_datastore {
-  type        = "string"
-  description = "Datastore to create VM(s) in "
+variable vm_network_labels {
+  type        = "map"
+  description = "VMs PortGroups"
 }
 
 variable vm_disk_template {
   type        = "string"
-  description = "Disk template to use for cloning CoreOS Container Linux"
+  description = "Disk template to use for cloning ETCD VM CoreOS Container Linux"
 }
 
 variable vm_disk_template_folder {
@@ -141,4 +146,50 @@ variable "image_re" {
 EOF
 
   type = "string"
+}
+
+variable "tectonic_vmware_worker_vcpu" {
+  type        = "string"
+  default     = "1"
+  description = "Worker node(s) vCPU count"
+}
+
+variable "http_proxy_enabled" {
+  type        = "string"
+  description = "switch to configure hosts to use outbound http proxy"
+}
+
+variable "http_proxy" {
+  type        = "string"
+  description = "http_proxy variable for Nodes"
+}
+
+variable "https_proxy" {
+  type        = "string"
+  description = "https_proxy variable for Nodes"
+}
+
+variable "no_proxy" {
+  type        = "string"
+  description = "no_proxy variable for Nodes"
+}
+
+variable "nfs_enabled" {
+  type        = "string"
+  description = "NFS mount enabled"
+}
+
+variable "iscsi_enabled" {
+  type        = "string"
+  description = "iSCSI connections enabled"
+}
+
+variable "trusted_ca" {
+  type        = "string"
+  description = "Path to CA to add to trusted CAs on cluster nodes"
+}
+
+variable "ntp_sources" {
+  type        = "map"
+  description = "NTP sources for the node"
 }
