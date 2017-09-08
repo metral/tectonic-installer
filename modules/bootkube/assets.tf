@@ -4,9 +4,8 @@ resource "template_dir" "experimental" {
   destination_dir = "./generated/experimental"
 
   vars {
-    etcd_operator_image = "${var.container_images["etcd_operator"]}"
-    etcd_service_ip     = "${cidrhost(var.service_cidr, 15)}"
-    kenc_image          = "${var.container_images["kenc"]}"
+    etcd_service_ip = "${cidrhost(var.service_cidr, 15)}"
+    kenc_image      = "${var.container_images["kenc"]}"
 
     etcd_ca_cert = "${base64encode(data.template_file.etcd_ca_cert_pem.rendered)}"
 
@@ -56,6 +55,10 @@ resource "template_dir" "bootkube" {
     kubednsmasq_image      = "${var.container_images["kubednsmasq"]}"
     kubedns_sidecar_image  = "${var.container_images["kubedns_sidecar"]}"
 
+    // The etcd operator should always be deployed, even if k8s etcd is *not*
+    // self-hosted. This was cluster users can still manage hosted clusters.
+    etcd_operator_image = "${var.container_images["etcd_operator"]}"
+
     # Choose the etcd endpoints to use.
     # 1. If experimental mode is enabled (self-hosted etcd), then use
     # var.etcd_service_ip.
@@ -89,11 +92,14 @@ resource "template_dir" "bootkube" {
     oidc_username_claim = "${var.oidc_username_claim}"
     oidc_groups_claim   = "${var.oidc_groups_claim}"
 
-    ca_cert            = "${base64encode(var.ca_cert == "" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : var.ca_cert)}"
-    apiserver_key      = "${base64encode(tls_private_key.apiserver.private_key_pem)}"
-    apiserver_cert     = "${base64encode(tls_locally_signed_cert.apiserver.cert_pem)}"
-    serviceaccount_pub = "${base64encode(tls_private_key.service_account.public_key_pem)}"
-    serviceaccount_key = "${base64encode(tls_private_key.service_account.private_key_pem)}"
+    ca_cert            = "${base64encode(var.existing_certs["ca_crt_path"] == "/dev/null" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : "${file(var.existing_certs["ca_crt_path"])}${tls_self_signed_cert.kube_ca.0.cert_pem}")}"
+    client_ca_cert     = "${base64encode(var.existing_certs["ca_key_path"] == "/dev/null" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : file(var.existing_certs["ca_crt_path"]))}"
+    kubelet_cert       = "${base64encode(tls_locally_signed_cert.kubelet.cert_pem)}"
+    kubelet_key        = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
+    apiserver_key      = "${base64encode(var.existing_certs["apiserver_cert_path"] == "/dev/null" ? join(" ", tls_private_key.apiserver.*.private_key_pem) : file(var.existing_certs["apiserver_key_path"]))}"
+    apiserver_cert     = "${base64encode(var.existing_certs["apiserver_cert_path"] == "/dev/null" ? join(" ", tls_locally_signed_cert.apiserver.*.cert_pem) : file(var.existing_certs["apiserver_cert_path"]))}"
+    serviceaccount_pub = "${base64encode(tls_private_key.service-account.public_key_pem)}"
+    serviceaccount_key = "${base64encode(tls_private_key.service-account.private_key_pem)}"
 
     etcd_ca_flag   = "${data.template_file.etcd_ca_cert_pem.rendered != "" ? "- --etcd-cafile=/etc/kubernetes/secrets/etcd-client-ca.crt" : "# no etcd-client-ca.crt given" }"
     etcd_cert_flag = "${data.template_file.etcd_client_crt.rendered != "" ? "- --etcd-certfile=/etc/kubernetes/secrets/etcd-client.crt" : "# no etcd-client.crt given" }"
@@ -147,7 +153,7 @@ data "template_file" "kubeconfig" {
   template = "${file("${path.module}/resources/kubeconfig")}"
 
   vars {
-    ca_cert      = "${base64encode(var.ca_cert == "" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : var.ca_cert)}"
+    ca_cert      = "${base64encode(var.existing_certs["ca_crt_path"] == "/dev/null" ? join(" ", tls_self_signed_cert.kube_ca.*.cert_pem) : "${file(var.existing_certs["ca_crt_path"])}${tls_self_signed_cert.kube_ca.0.cert_pem}")}"
     kubelet_cert = "${base64encode(tls_locally_signed_cert.kubelet.cert_pem)}"
     kubelet_key  = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
     server       = "${var.kube_apiserver_url}"

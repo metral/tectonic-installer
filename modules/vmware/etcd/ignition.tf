@@ -14,6 +14,9 @@ data "ignition_config" "etcd" {
     "${data.ignition_file.etcd_client_key.id}",
     "${data.ignition_file.etcd_peer_crt.id}",
     "${data.ignition_file.etcd_peer_key.id}",
+    "${data.ignition_file.profile_node.id}",
+    "${data.ignition_file.profile_systemd.id}",
+    "${data.ignition_file.ntp_conf.id}",
   ]
 
   systemd = [
@@ -128,8 +131,8 @@ data "ignition_systemd_unit" "locksmithd" {
       name    = "40-etcd-lock.conf"
 
       content = <<EOF
-[Service] 
-Environment=REBOOT_STRATEGY=etcd-lock 
+[Service]
+Environment=REBOOT_STRATEGY=etcd-lock
 Environment=LOCKSMITHD_ETCD_CAFILE=/etc/ssl/etcd/ca.crt
 Environment=LOCKSMITHD_ETCD_KEYFILE=/etc/ssl/etcd/client.key
 Environment=LOCKSMITHD_ETCD_CERTFILE=/etc/ssl/etcd/client.crt
@@ -137,6 +140,43 @@ Environment=LOCKSMITHD_ENDPOINT=https://${var.hostname["${count.index}"]}.${var.
 EOF
     },
   ]
+}
+
+data "ignition_file" "profile_node" {
+  count      = "${var.http_proxy_enabled ? 1 : 0}"
+  path       = "/etc/profile.env"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = <<EOF
+export HTTP_PROXY=${var.http_proxy}
+export HTTPS_PROXY=${var.https_proxy}
+export NO_PROXY=${var.no_proxy}
+export http_proxy=${var.http_proxy}
+export https_proxy=${var.https_proxy}
+export no_proxy=${var.no_proxy}
+EOF
+  }
+}
+
+data "ignition_file" "profile_systemd" {
+  count      = "${var.http_proxy_enabled ? 1 : 0}"
+  path       = "/etc/systemd/system.conf.d/10-default-env.conf"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = <<EOF
+[Manager]
+DefaultEnvironment=HTTP_PROXY=${var.http_proxy}
+DefaultEnvironment=HTTPS_PROXY=${var.https_proxy}
+DefaultEnvironment=NO_PROXY=${var.no_proxy}
+DefaultEnvironment=http_proxy=${var.http_proxy}
+DefaultEnvironment=https_proxy=${var.https_proxy}
+DefaultEnvironment=no_proxy=${var.no_proxy}
+EOF
+  }
 }
 
 data "template_file" "etcd-cluster" {
@@ -203,8 +243,48 @@ data "ignition_networkd_unit" "vmnetwork" {
   [Network]
   DNS=${var.dns_server}
   Address=${var.ip_address["${count.index}"]}
-  Gateway=${var.gateway}
+  Gateway=${var.gateways["${count.index}"]}
   UseDomains=yes
   Domains=${var.base_domain}
 EOF
+}
+
+data "ignition_file" "trusted_ca" {
+  path       = "/etc/ssl/certs/Local_Trusted.pem"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = "${file(var.trusted_ca)}"
+  }
+}
+
+data "ignition_systemd_unit" "update_ca" {
+  name    = "update_ca.service"
+
+  content = <<EOF
+  [Unit]
+  Description=Run script to update the system bundle of Certificate Authorities
+
+  [Service]
+  Type=oneshot
+  ExecStart=/usr/sbin/update-ca-certificates
+
+  [Install]
+  WantedBy=multi-user.target
+EOF
+}
+
+data "ignition_file" "ntp_conf" {
+  count      = "${length(keys(var.ntp_sources)) > 0 ? 1 : 0}"
+  path       = "/etc/systemd/timesyncd.conf"
+  mode       = 0644
+  filesystem = "root"
+
+  content {
+    content = <<EOF
+[Time]
+NTP=${var.ntp_sources["${count.index}"]}
+EOF
+  }
 }

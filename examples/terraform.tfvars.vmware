@@ -114,6 +114,19 @@ tectonic_etcd_count = "0"
 // Note: If `tectonic_experimental` is set to `true` this variable has no effect, because the experimental self-hosted etcd always uses TLS.
 // tectonic_etcd_tls_enabled = true
 
+// (optional) A set of paths that point to tls assets that have been pregenerated for the cluster. You can provide as many or as few certs as desired. The certificate files can include an intermediate certificate if necessary.<br>
+// ca_crt_path:         The file location of a PEM-encoded CA certificate, used to generate the certificates that we will use to secure the tls enabled endpoints in tectonic.<br>
+// ca_key_path:         The file location of a PEM-encoded CA key, used to sign all of the generated certificates. If left blank one will be generated.<br>
+// ca_key_alg:          The algorithm used to generate the ca_key. The default value is recommended. This field is mandatory if `ca_key` is set.<br>
+// ingress_crt_path:    The file location of the certificate that will be used to secure the ingress controller in front of the console and identity services.<br>
+//                      This certificate should have the CN and Subject Alternate Name set. See RFC2818 for details<br>
+// ingress_key_path:    The file location of the key that will be used to secure the ingress controller in front of the console and identity services.<br>
+// apiserver_cert_path: The file location of the certificate that will be used to secure communication with the kube apiserver.<br>
+//                      This certificate should have the following Subject Alternate Names set: "The common name used to address the api server", "kubernetes", "kubernetes.default",¬"kubernetes.default.svc",¬"kubernetes.default.svc.cluster.local" and a SAN IP of the ip in the service range. <br>
+// apiserver_key_path:  The file location of the key that will be used to secure communication with the kube apiserver.<br>
+// <br>
+// tectonic_existing_certs = ""
+
 // If set to true, experimental Tectonic assets are being deployed.
 tectonic_experimental = false
 
@@ -167,7 +180,7 @@ tectonic_vmware_etcd_datastore = ""
 // Default Gateway IP address for etcd nodes(s)
 tectonic_vmware_etcd_gateway = ""
 
-// Terraform map of etcd node(s) Hostnames, Example: 
+// Terraform map of etcd node(s) Hostnames, Example:
 //   tectonic_vmware_etcd_hostnames = {
 //   "0" = "mycluster-etcd-0"
 //   "1" = "mycluster-etcd-1"
@@ -175,7 +188,7 @@ tectonic_vmware_etcd_gateway = ""
 // }
 tectonic_vmware_etcd_hostnames = ""
 
-// Terraform map of etcd node(s) IP Addresses, Example: 
+// Terraform map of etcd node(s) IP Addresses, Example:
 //   tectonic_vmware_etcd_ip = {
 //   "0" = "192.168.246.10/24"
 //   "1" = "192.168.246.11/24"
@@ -201,7 +214,7 @@ tectonic_vmware_master_datastore = ""
 // Default Gateway IP address for Master nodes(s)
 tectonic_vmware_master_gateway = ""
 
-// Terraform map of Master node(s) Hostnames, Example: 
+// Terraform map of Master node(s) Hostnames, Example:
 //   tectonic_vmware_master_hostnames = {
 //   "0" = "mycluster-master-0"
 //   "1" = "mycluster-master-1"
@@ -226,6 +239,9 @@ tectonic_vmware_network = ""
 
 // DNS Server to be used by Virtual Machine(s). Multiple DNS servers can be separated by whitespace. Example: `"192.168.1.1 192.168.2.1"`
 tectonic_vmware_node_dns = ""
+
+// (optional) The name of a Resource Pool in which to launch the virtual machine. Requires full path. Full path can be obtained by executing `govc pool.info $ResourcePoolName`
+// tectonic_vmware_resource_pool = ""
 
 // vCenter Server IP/FQDN
 tectonic_vmware_server = ""

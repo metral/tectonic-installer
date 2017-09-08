@@ -89,6 +89,7 @@ function sign_with_yubikey() {
   # concatenating them together.
 }
 
+<<<<<<< HEAD
 function copy_existing_sig() {
   if [ -f "${DIR}/payload.json.sig" ]; then
       cp "${DIR}/payload.json.sig" "${DIR}/payload.json.sig.old"
@@ -98,6 +99,9 @@ function copy_existing_sig() {
 copy_existing_sig
 
 if [[ "${SIGN_WITH_TEST_KEY}" == "true" ]]; then
+=======
+if [[ ${SIGN_WITH_TEST_KEY} == "true" ]]; then
+>>>>>>> ford
   sign_with_testkey
 else
   sign_with_yubikey
