@@ -21,11 +21,11 @@ module "etcd" {
   ip_address = "${var.tectonic_vmware_etcd_ip}"
   gateways   = "${var.tectonic_vmware_etcd_gateways}"
 
-  vmware_datacenters      = "${var.tectonic_vmware_etcd_datacenters}"
-  vmware_clusters         = "${var.tectonic_vmware_etcd_clusters}"
-  vm_disk_datastores      = "${var.tectonic_vmware_etcd_datastores}"
-  vm_network_labels       = "${var.tectonic_vmware_etcd_networks}"
-  ntp_sources             = "${var.tectonic_etcd_ntp}"
+  vmware_datacenters = "${var.tectonic_vmware_etcd_datacenters}"
+  vmware_clusters    = "${var.tectonic_vmware_etcd_clusters}"
+  vm_disk_datastores = "${var.tectonic_vmware_etcd_datastores}"
+  vm_network_labels  = "${var.tectonic_vmware_etcd_networks}"
+  ntp_sources        = "${var.tectonic_etcd_ntp}"
 
   vmware_cluster          = "${var.tectonic_vmware_cluster}"
   vmware_resource_pool    = "${var.tectonic_vmware_resource_pool}"
@@ -41,7 +41,6 @@ module "etcd" {
   https_proxy             = "${var.tectonic_vmware_httpsproxy}"
   no_proxy                = "${var.tectonic_vmware_noproxy}"
   trusted_ca              = "${var.tectonic_trusted_ca}"
-
 }
 
 module "masters" {
@@ -65,11 +64,11 @@ module "masters" {
   kube_image_url            = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$1")}"
   kube_image_tag            = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$2")}"
 
-  vmware_datacenters      = "${var.tectonic_vmware_master_datacenters}"
-  vmware_clusters         = "${var.tectonic_vmware_master_clusters}"
-  vm_disk_datastores      = "${var.tectonic_vmware_master_datastores}"
-  vm_network_labels       = "${var.tectonic_vmware_master_networks}"
-  ntp_sources             = "${var.tectonic_master_ntp}"
+  vmware_datacenters = "${var.tectonic_vmware_master_datacenters}"
+  vmware_clusters    = "${var.tectonic_vmware_master_clusters}"
+  vm_disk_datastores = "${var.tectonic_vmware_master_datastores}"
+  vm_network_labels  = "${var.tectonic_vmware_master_networks}"
+  ntp_sources        = "${var.tectonic_master_ntp}"
 
   vmware_cluster          = "${var.tectonic_vmware_cluster}"
   vmware_resource_pool    = "${var.tectonic_vmware_resource_pool}"
@@ -84,13 +83,12 @@ module "masters" {
   private_key             = "${var.tectonic_vmware_ssh_private_key_path}"
   image_re                = "${var.tectonic_image_re}"
   http_proxy_enabled      = "${var.tectonic_vmware_httpproxy_enabled}"
-  http_proxy              =  "${var.tectonic_vmware_httpproxy}"
-  https_proxy             =  "${var.tectonic_vmware_httpsproxy}"
-  no_proxy                =  "${var.tectonic_vmware_noproxy}"
+  http_proxy              = "${var.tectonic_vmware_httpproxy}"
+  https_proxy             = "${var.tectonic_vmware_httpsproxy}"
+  no_proxy                = "${var.tectonic_vmware_noproxy}"
   nfs_enabled             = "${var.tectonic_vmware_nfs_enabled}"
   iscsi_enabled           = "${var.tectonic_vmware_iscsi_enabled}"
   trusted_ca              = "${var.tectonic_trusted_ca}"
-
 }
 
 module "workers" {
@@ -113,11 +111,11 @@ module "workers" {
   kube_image_url      = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$1")}"
   kube_image_tag      = "${replace(var.tectonic_container_images["hyperkube"],var.tectonic_image_re,"$2")}"
 
-  vmware_datacenters      = "${var.tectonic_vmware_worker_datacenters}"
-  vmware_clusters         = "${var.tectonic_vmware_worker_clusters}"
-  vm_disk_datastores      = "${var.tectonic_vmware_worker_datastores}"
-  vm_network_labels       = "${var.tectonic_vmware_worker_networks}"
-  ntp_sources             = "${var.tectonic_worker_ntp}"
+  vmware_datacenters = "${var.tectonic_vmware_worker_datacenters}"
+  vmware_clusters    = "${var.tectonic_vmware_worker_clusters}"
+  vm_disk_datastores = "${var.tectonic_vmware_worker_datastores}"
+  vm_network_labels  = "${var.tectonic_vmware_worker_networks}"
+  ntp_sources        = "${var.tectonic_worker_ntp}"
 
   vmware_cluster          = "${var.tectonic_vmware_cluster}"
   vmware_resource_pool    = "${var.tectonic_vmware_resource_pool}"
@@ -132,11 +130,10 @@ module "workers" {
   private_key             = "${var.tectonic_vmware_ssh_private_key_path}"
   image_re                = "${var.tectonic_image_re}"
   http_proxy_enabled      = "${var.tectonic_vmware_httpproxy_enabled}"
-  http_proxy              =  "${var.tectonic_vmware_httpproxy}"
-  https_proxy             =  "${var.tectonic_vmware_httpsproxy}"
-  no_proxy                =  "${var.tectonic_vmware_noproxy}"
+  http_proxy              = "${var.tectonic_vmware_httpproxy}"
+  https_proxy             = "${var.tectonic_vmware_httpsproxy}"
+  no_proxy                = "${var.tectonic_vmware_noproxy}"
   nfs_enabled             = "${var.tectonic_vmware_nfs_enabled}"
   iscsi_enabled           = "${var.tectonic_vmware_iscsi_enabled}"
   trusted_ca              = "${var.tectonic_trusted_ca}"
-
 }
