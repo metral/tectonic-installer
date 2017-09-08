@@ -95,8 +95,8 @@ resource "template_dir" "bootkube" {
     kubelet_key        = "${base64encode(tls_private_key.kubelet.private_key_pem)}"
     apiserver_key      = "${base64encode(var.existing_certs["apiserver_cert_path"] == "/dev/null" ? join(" ", tls_private_key.apiserver.*.private_key_pem) : file(var.existing_certs["apiserver_key_path"]))}"
     apiserver_cert     = "${base64encode(var.existing_certs["apiserver_cert_path"] == "/dev/null" ? join(" ", tls_locally_signed_cert.apiserver.*.cert_pem) : file(var.existing_certs["apiserver_cert_path"]))}"
-    serviceaccount_pub = "${base64encode(tls_private_key.service-account.public_key_pem)}"
-    serviceaccount_key = "${base64encode(tls_private_key.service-account.private_key_pem)}"
+    serviceaccount_pub = "${base64encode(tls_private_key.service_account.public_key_pem)}"
+    serviceaccount_key = "${base64encode(tls_private_key.service_account.private_key_pem)}"
 
     etcd_ca_flag   = "${data.template_file.etcd_ca_cert_pem.rendered != "" ? "- --etcd-cafile=/etc/kubernetes/secrets/etcd-client-ca.crt" : "# no etcd-client-ca.crt given" }"
     etcd_cert_flag = "${data.template_file.etcd_client_crt.rendered != "" ? "- --etcd-certfile=/etc/kubernetes/secrets/etcd-client.crt" : "# no etcd-client.crt given" }"
