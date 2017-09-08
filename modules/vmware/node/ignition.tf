@@ -178,8 +178,8 @@ EOF
 }
 
 data "ignition_systemd_unit" "rpc-statd" {
-  name    = "rpc-statd.service"
-  enable  = "${var.nfs_enabled ? true : false}"
+  name   = "rpc-statd.service"
+  enable = "${var.nfs_enabled ? true : false}"
 
   content = <<EOF
   [Unit]
@@ -214,8 +214,8 @@ EOF
 }
 
 data "ignition_systemd_unit" "iscsid" {
-  name    = "iscsid.service"
-  enable  = "${var.iscsi_enabled ? true : false}"
+  name   = "iscsid.service"
+  enable = "${var.iscsi_enabled ? true : false}"
 }
 
 data "ignition_networkd_unit" "vmnetwork" {
