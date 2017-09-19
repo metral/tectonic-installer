@@ -119,7 +119,7 @@ variable "tectonic_vmware_etcd_resource_pool" {
 
   description = <<EOF
   terraform map of etcd node(s) vSphere Resource Pools, example:
-  tectonic_vmware_etcd_clusters = {
+  tectonic_vmware_etcd_resource_pool = {
   "0" = "myresourcepool-1"
   "1" = "myresourcepool-2"
   "2" = "myresourcepool-3"
@@ -249,7 +249,7 @@ variable "tectonic_vmware_master_resource_pool" {
 
   description = <<EOF
   terraform map of master node(s) vSphere Resource pools, example:
-  tectonic_vmware_master_clusters = {
+  tectonic_vmware_master_resource_pool = {
   "0" = "myresourcepool-0"
   "1" = "myresourcepool-1"
   "2" = "myresourcepool-2"
@@ -374,7 +374,7 @@ variable "tectonic_vmware_worker_resource_pool" {
 
   description = <<EOF
   terraform map of worker node(s) vSphere Resource Pools, example:
-  tectonic_vmware_worker_clusters = {
+  tectonic_vmware_worker_resource_pool = {
   "0" = "myresourcepool-0"
   "1" = "myresourcepool-1"
 }
